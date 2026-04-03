@@ -1,0 +1,14 @@
+[[redirects]]
+  from = "/api/hl"
+  to = "https://api.hyperliquid.xyz/info"
+  status = 200
+  force = true
+  [redirects.headers]
+    X-From = "netlify-proxy"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
