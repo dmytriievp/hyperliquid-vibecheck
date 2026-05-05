@@ -370,24 +370,20 @@ function grp(name,key){
 // Volume = base volume * close price (notional USD)
 // ─────────────────────────────────────────────────────────────────────────────
 
-const HIST_ASSETS = [
-  'BTC',
-  'ETH','SOL','BNB','XRP','DOGE','ADA','AVAX','HYPE','TAO','SUI',
-  'TON','WIF','kPEPE','ARB','OP','INJ','TIA','NEAR','APT','SEI',
-  'kSHIB','TRUMP','POPCAT','WLD','ENA','JUP','PENDLE',
-  'LINK','DOT','ATOM','FTM','ONDO','EIGEN','VIRTUAL','AI16Z',
-  'xyz:NVDA','xyz:TSLA','xyz:AAPL','xyz:MSFT','xyz:GOOGL','xyz:META',
-  'xyz:AMZN','xyz:PLTR','xyz:MSTR','xyz:COIN','xyz:AMD','xyz:NFLX',
-  'xyz:SP500','xyz:XYZ100','xyz:VIX','xyz:JP225',
-  'xyz:GOLD','xyz:SILVER','xyz:BRENTOIL','xyz:CL','xyz:COPPER','xyz:NATGAS',
-  'xyz:EUR','xyz:JPY',
-];
+// HIST_ASSETS is now derived dynamically from the live AC categorisation
+// inside fetchHistoricalByDay(). This ensures historical coverage matches
+// what's actually being shown on the live render — no more silent drops
+// of TradFi assets (or anything else) that weren't in a hardcoded list.
 
 let _histCache = null, _histCacheTime = 0;
 const HIST_TTL = 60 * 60 * 1000;
 
 async function fetchHistoricalByDay() {
   if (_histCache && Date.now() - _histCacheTime < HIST_TTL) return _histCache;
+
+  // Derive asset list from live categorisation — every asset we render
+  // a category for, we also fetch history for. Keeps 7D/30D in sync with 1D.
+  const HIST_ASSETS = Object.keys(AC);
 
   const now   = Date.now();
   const start = now - 31 * 24 * 60 * 60 * 1000;
@@ -612,12 +608,17 @@ function closeModal(e){
 // RENDER
 // ─────────────────────────────────────────────────────────────────────────────
 function renderAll(fullAggr, hist){
-  // Get timeframe-adjusted aggregation
-  // Volume from candleSnapshot history (real multi-day), OI from live snapshot
-  const histVol = aggrFromHist(S.histByDay, S.tf);
+  // Volume source by timeframe:
+  //   1D  → live dayNtlVlm (rolling 24h, complete universe coverage)
+  //   7D  → sum of last 7 daily candles from history
+  //   30D → sum of last 30 daily candles from history
+  // Historical is skipped for 1D because:
+  //   (a) today's candle is partial (UTC day in progress) → undercounts
+  //   (b) live dayNtlVlm IS the rolling 24h, computed by HL across all assets
+  // OI always comes from the live snapshot — candleSnapshot has no OI.
+  const histVol  = (S.tf !== '1D') ? aggrFromHist(S.histByDay, S.tf) : null;
   const liveAggr = fullAggr;
 
-  // Merge: use historical vol if available, live OI always
   const volData  = histVol || liveAggr;
   const totalVol = volData.totalVol;
   const catVol   = volData.catVol;
