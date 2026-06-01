@@ -943,12 +943,13 @@ async function fetchData(){
     S.history   = saveH(S.aggr);
     renderAll(S.aggr, S.history);
 
-    // On localhost: also kick off local candle fetch (server does this in prod)
-    if(isLocal && !S.histByDay){
+    // Kick off candle fetch if histByDay not yet populated (localhost always,
+    // or production when falling back to direct API during first deploy)
+    if(!S.histByDay){
       _localFetchCandles().then(byDay=>{
         S.histByDay=byDay;
         renderAll(S.aggr,S.history);
-      }).catch(e=>console.warn('Local candle fetch failed:',e.message));
+      }).catch(e=>console.warn('Candle fetch failed:',e.message));
     }
   }catch(e){
     console.error(e);
