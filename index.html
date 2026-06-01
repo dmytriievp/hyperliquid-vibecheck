@@ -363,9 +363,6 @@ footer{border-top:1px solid var(--border);padding:24px 0 8px;margin-top:8px;disp
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIG
 // ─────────────────────────────────────────────────────────────────────────────
-// Use Netlify proxy in production, direct API on localhost
-const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-const HL_API = IS_LOCAL ? 'https://api.hyperliquid.xyz/info' : '/api/hl';
 const HIP3_DEXES = ['xyz','flx','vntl','hyna','km','cash','para'];
 
 const CC = {BTC:'#4fd2c2',Altcoins:'#f5a623',Stocks:'#e05c8a',Indices:'#7b6cf6',Commodities:'#4caf82',FX:'#e8833a','Pre-IPO':'#a78bfa'};
@@ -410,86 +407,6 @@ function grp(name,key){
 }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HISTORICAL DATA via candleSnapshot
-// Fetch 30 daily candles for key assets, aggregate by category per day
-// Volume = base volume * close price (notional USD)
-// ─────────────────────────────────────────────────────────────────────────────
-
-// HIST_ASSETS is now derived dynamically from the live AC categorisation
-// inside fetchHistoricalByDay(). This ensures historical coverage matches
-// what's actually being shown on the live render — no more silent drops
-// of TradFi assets (or anything else) that weren't in a hardcoded list.
-
-let _histCache = null, _histCacheTime = 0;
-const HIST_TTL = 60 * 60 * 1000;
-
-async function fetchHistoricalByDay() {
-  if (_histCache && Date.now() - _histCacheTime < HIST_TTL) return _histCache;
-
-  // Derive asset list from live categorisation — every asset we render
-  // a category for, we also fetch history for. Keeps 7D/30D in sync with 1D.
-  const HIST_ASSETS = Object.keys(AC);
-
-  const now   = Date.now();
-  const start = now - 31 * 24 * 60 * 60 * 1000;
-  const BATCH = 8;
-  const allCandles = {};
-
-  for (let i = 0; i < HIST_ASSETS.length; i += BATCH) {
-    const batch = HIST_ASSETS.slice(i, i + BATCH);
-    const results = await Promise.allSettled(batch.map(async coin => {
-      const body = JSON.stringify({type:'candleSnapshot',req:{coin,interval:'1d',startTime:start,endTime:now}});
-      let data;
-      try {
-        if (S.usingProxy) {
-          const r = await fetch(`https://corsproxy.io/?${encodeURIComponent(HL_API)}`,{method:'POST',headers:{'Content-Type':'application/json','x-requested-with':'XMLHttpRequest'},body});
-          data = await r.json();
-        } else {
-          const r = await fetch(HL_API,{method:'POST',headers:{'Content-Type':'application/json'},body});
-          data = await r.json();
-        }
-        if (!Array.isArray(data)) return {coin, candles:[]};
-        return {coin, candles: data.map(c => ({
-          day: new Date(c.t).toLocaleDateString('en-US',{month:'short',day:'numeric'}),
-          vol: parseFloat(c.v||0) * parseFloat(c.c||0),
-        }))};
-      } catch(e) { return {coin, candles:[]}; }
-    }));
-    results.forEach(r => { if(r.status==='fulfilled'&&r.value) allCandles[r.value.coin]=r.value.candles; });
-    if (i + BATCH < HIST_ASSETS.length) await new Promise(res=>setTimeout(res,150));
-  }
-
-  // Collect all days, sort, take last 30
-  const daySet = new Set();
-  Object.values(allCandles).forEach(cs => cs.forEach(c => daySet.add(c.day)));
-  // Sort by parsing as date (add current year for parsing)
-  const days = Array.from(daySet).sort((a,b) => {
-    const ya = new Date(a+','+new Date().getFullYear()), yb = new Date(b+','+new Date().getFullYear());
-    return ya-yb;
-  }).slice(-30);
-
-  // Aggregate per day
-  const byDay = days.map(day => {
-    let totalVol=0; const catVol={};
-    Object.entries(allCandles).forEach(([coin,cs]) => {
-      const c = cs.find(x=>x.day===day); if(!c) return;
-      totalVol += c.vol;
-      // Unknown HIP-3 assets (dex:NAME) → default TradFi/Stocks so they're counted
-      if(!AC[coin]) {
-        if(coin.includes(':')) { const d=coin.split(':')[0]; if(d!=='hyna') { catVol['TradFi']=(catVol['TradFi']||0)+c.vol; catVol['Stocks']=(catVol['Stocks']||0)+c.vol; } }
-        return;
-      }
-      ALL_CATS.forEach(dc => { if(!grp(coin,dc.key)) return; catVol[dc.key]=(catVol[dc.key]||0)+c.vol; });
-    });
-    return {day,totalVol,catVol};
-  });
-
-  _histCache = byDay; _histCacheTime = Date.now();
-  console.log(`✓ History: ${days.length} days, ${HIST_ASSETS.length} assets`);
-  return byDay;
-}
-
 function aggrFromHist(byDay, tf) {
   if(!byDay||byDay.length===0) return null;
   const n = tf==='1D'?1:tf==='7D'?7:30;
@@ -504,81 +421,45 @@ function aggrFromHist(byDay, tf) {
 // ─────────────────────────────────────────────────────────────────────────────
 // STATE
 // ─────────────────────────────────────────────────────────────────────────────
-const S={aggr:null,history:[],histByDay:null,tf:'1D',countdown:3600,charts:{},usingProxy:false,modalChart:null};
+const S={aggr:null,history:[],histByDay:null,tf:'1D',updatedAt:null,charts:{},modalChart:null};
 
 // ─────────────────────────────────────────────────────────────────────────────
-// API
+// LOCAL DEV FALLBACK — direct API (used only on localhost)
 // ─────────────────────────────────────────────────────────────────────────────
-async function hlPost(type,dex,proxy){
-  const body=JSON.stringify(dex?{type,dex}:{type});
-  if(proxy){
-    const r=await fetch(`https://corsproxy.io/?${encodeURIComponent(HL_API)}`,{method:'POST',headers:{'Content-Type':'application/json','x-requested-with':'XMLHttpRequest'},body});
-    return r.json();
-  }
-  const r=await fetch(HL_API,{method:'POST',headers:{'Content-Type':'application/json'},body});
-  return r.json();
-}
-
-function parseDex(data){
-  const assets=[];
-  const meta=Array.isArray(data[0])?data[0]:(data[0]?.universe||[]);
-  const ctx=Array.isArray(data[1])?data[1]:[];
-  meta.forEach((a,i)=>{
-    const c=ctx[i]||{};
-    const px=parseFloat(c.markPx||c.oraclePx||c.prevDayPx||0);
-    assets.push({name:a.name,volume:parseFloat(c.dayNtlVlm||0),oi:parseFloat(c.openInterest||0)*px});
-  });
-  return assets;
-}
-
-async function fetchAll(){
-  const go=async(proxy)=>{
-    const rs=await Promise.allSettled([
-      hlPost('metaAndAssetCtxs',null,proxy),
-      ...HIP3_DEXES.map(d=>hlPost('metaAndAssetCtxs',d,proxy))
-    ]);
-    if(rs[0].status!=='fulfilled') throw new Error(rs[0].reason?.message||'native failed');
-    const assets=parseDex(rs[0].value);
-    HIP3_DEXES.forEach((_,i)=>{
-      const r=rs[i+1];
-      if(r.status==='fulfilled'&&Array.isArray(r.value)) assets.push(...parseDex(r.value));
-      else console.warn(HIP3_DEXES[i],'failed:',r.reason?.message);
+async function _localFetch(){
+  const API='https://api.hyperliquid.xyz/info';
+  function _parseDex(data){
+    const assets=[];
+    const meta=Array.isArray(data[0])?data[0]:(data[0]?.universe||[]);
+    const ctx=Array.isArray(data[1])?data[1]:[];
+    meta.forEach((a,i)=>{
+      const c=ctx[i]||{};
+      const px=parseFloat(c.markPx||c.oraclePx||c.prevDayPx||0);
+      assets.push({name:a.name,volume:parseFloat(c.dayNtlVlm||0),oi:parseFloat(c.openInterest||0)*px});
     });
     return assets;
-  };
-  try{return await go(S.usingProxy);}
-  catch(e){if(!S.usingProxy){console.warn('proxy fallback');S.usingProxy=true;return go(true);}throw e;}
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// AGGREGATION — with timeframe support
-// ─────────────────────────────────────────────────────────────────────────────
-function aggregate(assets){
+  }
+  const rs=await Promise.allSettled([
+    fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'metaAndAssetCtxs'})}).then(r=>r.json()),
+    ...HIP3_DEXES.map(d=>fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'metaAndAssetCtxs',dex:d})}).then(r=>r.json()))
+  ]);
+  if(rs[0].status!=='fulfilled') throw new Error('native fetch failed');
+  const assets=_parseDex(rs[0].value);
+  HIP3_DEXES.forEach((_,i)=>{
+    const r=rs[i+1];
+    if(r.status==='fulfilled'&&Array.isArray(r.value)) assets.push(..._parseDex(r.value));
+  });
+  // Aggregate locally
   let tV=0,tO=0;const cV={},cO={};
   assets.forEach(a=>{
     tV+=a.volume;tO+=a.oi;
-    if(!AC[a.name]) {
-      // Unknown HIP-3 assets → default TradFi/Stocks
-      if(a.name.includes(':')) { const d=a.name.split(':')[0]; if(d!=='hyna') { cV['TradFi']=(cV['TradFi']||0)+a.volume; cV['Stocks']=(cV['Stocks']||0)+a.volume; cO['TradFi']=(cO['TradFi']||0)+a.oi; cO['Stocks']=(cO['Stocks']||0)+a.oi; } }
+    if(!AC[a.name]){
+      if(a.name.includes(':')){const d=a.name.split(':')[0];if(d!=='hyna'){cV['TradFi']=(cV['TradFi']||0)+a.volume;cV['Stocks']=(cV['Stocks']||0)+a.volume;cO['TradFi']=(cO['TradFi']||0)+a.oi;cO['Stocks']=(cO['Stocks']||0)+a.oi;}}
       return;
     }
-    ALL_CATS.forEach(d=>{
-      if(!grp(a.name,d.key))return;
-      cV[d.key]=(cV[d.key]||0)+a.volume;
-      cO[d.key]=(cO[d.key]||0)+a.oi;
-    });
+    ALL_CATS.forEach(dc=>{if(!grp(a.name,dc.key))return;cV[dc.key]=(cV[dc.key]||0)+a.volume;cO[dc.key]=(cO[dc.key]||0)+a.oi;});
   });
-  return{totalVol:tV,totalOI:tO,catVol:cV,catOI:cO};
-}
-
-// Build aggregated view based on selected timeframe from history
-// 1D = latest snapshot, 7D = sum last 7 days, 30D = sum last 30 days
-// Volume (dayNtlVlm) is a rolling 24h figure — for 7D/30D we average across days
-// OI is a point-in-time figure — for 7D/30D we average across snapshots
-// getTimedAggr now delegates to candleSnapshot history for volume,
-// and still uses live OI snapshot for OI (candleSnapshot has no OI)
-function getTimedAggr(hist, tf) {
-  return S.aggr; // OI always from live — hist candles used for vol separately
+  return {updatedAt:Date.now(),live:{totalVol:tV,totalOI:tO,catVol:cV,catOI:cO},histByDay:null};
 }
 
 
@@ -587,7 +468,8 @@ function getTimedAggr(hist, tf) {
 // ─────────────────────────────────────────────────────────────────────────────
 function $u(v){if(v>=1e9)return'$'+(v/1e9).toFixed(1)+'B';if(v>=1e6)return'$'+(v/1e6).toFixed(1)+'M';if(v>=1e3)return'$'+(v/1e3).toFixed(0)+'K';return'$'+v.toFixed(0)}
 function $p(v,t){return t>0?((v/t)*100).toFixed(1)+'%':'0.0%'}
-function $cd(s){return`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
+function ago(ts){if(!ts)return'—';const m=Math.floor((Date.now()-ts)/60000);if(m<1)return'just now';if(m<60)return m+'m ago';return Math.floor(m/60)+'h ago';}
+function nextHour(){const d=new Date();d.setHours(d.getHours()+1,0,0,0);return d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false});}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HISTORY
@@ -672,11 +554,9 @@ function renderAll(fullAggr, hist){
   const catOI    = liveAggr.catOI;
   const aggr     = {totalVol, totalOI, catVol, catOI};
 
-  const now=new Date().toLocaleTimeString('en-US',{hour12:false,hour:'2-digit',minute:'2-digit'});
   document.getElementById('header-meta').innerHTML=
-    `<span class="live-dot"></span><span class="hl">LIVE</span> &nbsp;·&nbsp; ${now}
-     <br/>Next refresh <span class="hl" id="cd">${$cd(S.countdown)}</span>
-     ${S.usingProxy?'<br/><span style="font-size:9px;opacity:.5">via CORS proxy</span>':''}` ;
+    `<span class="live-dot"></span><span class="hl">LIVE</span> &nbsp;·&nbsp; Updated <span id="ago-txt">${ago(S.updatedAt)}</span>
+     <br/>Next refresh <span class="hl">~${nextHour()}</span>`;
 
   const tfLabel={'1D':'24 Hours','7D':'7 Days','30D':'30 Days'}[S.tf];
 
@@ -1027,35 +907,51 @@ function showLoading(){
     </div>`;
 }
 function showError(msg){
-  document.getElementById('main').innerHTML=`<div class="error-box">⚠ ${msg}<br/><br/>Run <code>python3 -m http.server 8080</code> then open <code>http://localhost:8080</code></div>`;
+  document.getElementById('main').innerHTML=`<div class="error-box">⚠ ${msg}</div>`;
 }
 
-async function refresh(){
+// ── "Updated X min ago" ticker — updates every minute without a full re-render
+setInterval(()=>{
+  const el=document.getElementById('ago-txt');
+  if(el&&S.updatedAt) el.textContent=ago(S.updatedAt);
+},60000);
+
+async function fetchData(){
+  const isLocal=location.hostname==='localhost'||location.hostname==='127.0.0.1';
   if(!S.aggr) showLoading();
   try{
-    const assets=await fetchAll();
-    S.aggr=aggregate(assets);
-    S.history=saveH(S.aggr);
-    S.countdown=3600;
-    // Fetch historical candle data for timeframe toggle
-    // Do this after initial render so page loads fast
-    renderAll(S.aggr,S.history);
-    fetchHistoricalByDay().then(byDay => {
-      S.histByDay = byDay;
-      renderAll(S.aggr, S.history); // re-render with real historical vol
-    }).catch(e => console.warn('History fetch failed:', e.message));
+    let payload;
+    if(isLocal){
+      // Local dev: hit Hyperliquid directly (no Netlify Functions available)
+      payload = await _localFetch();
+    } else {
+      // Production: fetch pre-built snapshot from Netlify Blobs via /api/data
+      const r=await fetch('/api/data');
+      if(!r.ok) throw new Error(`/api/data returned ${r.status}`);
+      payload=await r.json();
+      if(payload.error) throw new Error(payload.error);
+    }
+    S.aggr      = payload.live;
+    S.histByDay = payload.histByDay; // null on localhost until server runs
+    S.updatedAt = payload.updatedAt;
+    S.history   = saveH(S.aggr);
+    renderAll(S.aggr, S.history);
+
+    // On localhost: also kick off local candle fetch (server does this in prod)
+    if(isLocal && !S.histByDay){
+      _localFetchCandles().then(byDay=>{
+        S.histByDay=byDay;
+        renderAll(S.aggr,S.history);
+      }).catch(e=>console.warn('Local candle fetch failed:',e.message));
+    }
   }catch(e){
     console.error(e);
-    showError(`${e.message} — retrying in 60s`);
-    S.countdown=60;
+    showError(e.message);
   }
 }
 
-setInterval(()=>{
-  S.countdown=Math.max(0,S.countdown-1);
-  const el=document.getElementById('cd');if(el) el.textContent=$cd(S.countdown);
-  if(S.countdown===0) refresh();
-},1000);
+// Poll every 5 min to pick up server's hourly refresh without a page reload
+setInterval(fetchData, 5*60*1000);
 
 if(location.protocol==='file:'){
   document.getElementById('banner').innerHTML=`
@@ -1066,7 +962,39 @@ if(location.protocol==='file:'){
     </div>`;
 }
 
-
+// Local dev candle fetch (mirrors what the server does in production)
+async function _localFetchCandles(){
+  const API='https://api.hyperliquid.xyz/info';
+  const assets=Object.keys(AC);
+  const now=Date.now(), start=now-31*24*60*60*1000;
+  const BATCH=8, allCandles={};
+  for(let i=0;i<assets.length;i+=BATCH){
+    const batch=assets.slice(i,i+BATCH);
+    const rs=await Promise.allSettled(batch.map(async coin=>{
+      const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({type:'candleSnapshot',req:{coin,interval:'1d',startTime:start,endTime:now}})});
+      const d=await r.json();
+      if(!Array.isArray(d))return{coin,candles:[]};
+      return{coin,candles:d.map(c=>({day:new Date(c.t).toLocaleDateString('en-US',{month:'short',day:'numeric'}),vol:parseFloat(c.v||0)*parseFloat(c.c||0)}))};
+    }));
+    rs.forEach(r=>{if(r.status==='fulfilled'&&r.value)allCandles[r.value.coin]=r.value.candles;});
+    if(i+BATCH<assets.length)await new Promise(res=>setTimeout(res,150));
+  }
+  const daySet=new Set();
+  Object.values(allCandles).forEach(cs=>cs.forEach(c=>daySet.add(c.day)));
+  const yr=new Date().getFullYear();
+  const days=Array.from(daySet).sort((a,b)=>new Date(`${a},${yr}`)-new Date(`${b},${yr}`)).slice(-30);
+  return days.map(day=>{
+    let totalVol=0;const catVol={};
+    Object.entries(allCandles).forEach(([coin,cs])=>{
+      const c=cs.find(x=>x.day===day);if(!c)return;
+      totalVol+=c.vol;
+      if(!AC[coin]){if(coin.includes(':')){const d=coin.split(':')[0];if(d!=='hyna'){catVol['TradFi']=(catVol['TradFi']||0)+c.vol;catVol['Stocks']=(catVol['Stocks']||0)+c.vol;}}return;}
+      ALL_CATS.forEach(dc=>{if(!grp(coin,dc.key))return;catVol[dc.key]=(catVol[dc.key]||0)+c.vol;});
+    });
+    return{day,totalVol,catVol};
+  });
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // VIBE GAUGE — half-circle speedometer
@@ -1267,7 +1195,7 @@ function renderDocs() {
 // ESC key closes modal
 document.addEventListener('keydown',e=>{if(e.key==='Escape') closeModal({type:'click',target:document.getElementById('modal')});});
 
-refresh();
+fetchData();
 </script>
 </body>
 </html>

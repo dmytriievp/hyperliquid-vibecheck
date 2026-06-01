@@ -1,3 +1,7 @@
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 [[redirects]]
   from = "/api/hl"
   to = "https://api.hyperliquid.xyz/info"
