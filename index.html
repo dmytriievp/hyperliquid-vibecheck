@@ -110,11 +110,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding-bot
 .kpi-pct{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--white);line-height:1;margin-bottom:4px;font-variant-numeric:tabular-nums}
 .kpi-abs{font-size:12px;color:var(--teal2);font-family:'Space Mono',monospace;font-weight:400}
 .kpi-metric-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;position:absolute;top:12px;right:12px;opacity:.7}
-/* Delta badge */
-.kpi-delta{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;display:inline-block;margin-top:5px}
-.kpi-delta.up{color:#4caf82}
-.kpi-delta.down{color:#e05c8a}
-.kpi-delta.flat{color:var(--muted)}
 
 /* ── PIE CARD ── */
 .pie-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all .2s;height:100%;display:flex;flex-direction:column}
@@ -789,12 +784,10 @@ function renderAll(fullAggr, hist){
   // Use requestAnimationFrame so canvas has rendered dimensions
   drawGauge(cryptoVolPct, tradfiVolPct, totalVol, catVol);
 
-  // Pass previous snapshot for delta calculation (second-to-last entry in history)
-  const prevSnap = hist.length >= 2 ? hist[hist.length-2] : null;
-  renderKPIs('vol-crypto',CRYPTO_CATS,catVol,totalVol,'VOL',prevSnap?.catVol,prevSnap?.totalVol);
-  renderKPIs('vol-tradfi',TRADFI_CATS,catVol,totalVol,'VOL',prevSnap?.catVol,prevSnap?.totalVol);
-  renderKPIs('oi-crypto', CRYPTO_CATS,catOI, totalOI, 'OI', prevSnap?.catOI, prevSnap?.totalOI);
-  renderKPIs('oi-tradfi', TRADFI_CATS,catOI, totalOI, 'OI', prevSnap?.catOI, prevSnap?.totalOI);
+  renderKPIs('vol-crypto',CRYPTO_CATS,catVol,totalVol,'VOL');
+  renderKPIs('vol-tradfi',TRADFI_CATS,catVol,totalVol,'VOL');
+  renderKPIs('oi-crypto', CRYPTO_CATS,catOI, totalOI, 'OI');
+  renderKPIs('oi-tradfi', TRADFI_CATS,catOI, totalOI, 'OI');
 
   const cVT=catVol['Crypto']||0, tVT=catVol['TradFi']||0;
   const cOT=catOI['Crypto'] ||0, tOT=catOI['TradFi'] ||0;
@@ -820,7 +813,7 @@ function openPie(metric,sector){
   openModal(title,subtitle,cats,data,groupTotal,total);
 }
 
-function renderKPIs(id,cats,data,total,ml,prevData,prevTotal){
+function renderKPIs(id,cats,data,total,ml){
   const parents  = cats.filter(dc=>dc.isParent);
   const children = cats.filter(dc=>!dc.isParent);
   const ordered  = [...parents, ...children];
@@ -829,24 +822,11 @@ function renderKPIs(id,cats,data,total,ml,prevData,prevTotal){
     const glow=dc.color.replace('#','');
     const r=parseInt(glow.substr(0,2),16),g=parseInt(glow.substr(2,2),16),b=parseInt(glow.substr(4,2),16);
     const fullRow = dc.isParent ? ' style="grid-column:1/-1"' : '';
-    // Delta vs previous snapshot
-    let deltaHtml='';
-    if(prevData && prevTotal>0 && total>0){
-      const pctNow=(v/total)*100;
-      const pctPrev=((prevData[dc.key]||0)/prevTotal)*100;
-      const d=pctNow-pctPrev;
-      if(Math.abs(d)>=0.05){
-        const cls=d>0?'up':'down';
-        const arrow=d>0?'▲':'▼';
-        deltaHtml=`<span class="kpi-delta ${cls}">${arrow} ${Math.abs(d).toFixed(1)}pp</span>`;
-      }
-    }
     return`<div class="kpi-card${dc.isParent?' parent':''}"${fullRow} style="--accent:${dc.color};--accent-glow:rgba(${r},${g},${b},0.07)">
       <div class="kpi-cat">${dc.label}</div>
       <div class="kpi-metric-label">${ml}</div>
       <div class="kpi-pct">${$p(v,total)}</div>
       <div class="kpi-abs">${$u(v)}</div>
-      ${deltaHtml}
     </div>`;
   }).join('');
 }
