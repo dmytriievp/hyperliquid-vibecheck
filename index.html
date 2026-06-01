@@ -926,10 +926,16 @@ async function fetchData(){
       payload = await _localFetch();
     } else {
       // Production: fetch pre-built snapshot from Netlify Blobs via /api/data
+      // Falls back to direct API if Blobs not yet populated (first deploy, 503)
       const r=await fetch('/api/data');
-      if(!r.ok) throw new Error(`/api/data returned ${r.status}`);
-      payload=await r.json();
-      if(payload.error) throw new Error(payload.error);
+      if(r.status===503){
+        console.warn('/api/data not ready yet — falling back to direct API');
+        payload = await _localFetch();
+      } else {
+        if(!r.ok) throw new Error(`/api/data returned ${r.status}`);
+        payload=await r.json();
+        if(payload.error) throw new Error(payload.error);
+      }
     }
     S.aggr      = payload.live;
     S.histByDay = payload.histByDay; // null on localhost until server runs
