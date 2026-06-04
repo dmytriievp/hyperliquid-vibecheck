@@ -978,11 +978,17 @@ async function _localFetchCandles(){
   for(let i=0;i<assets.length;i+=BATCH){
     const batch=assets.slice(i,i+BATCH);
     const rs=await Promise.allSettled(batch.map(async coin=>{
-      const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({type:'candleSnapshot',req:{coin,interval:'1d',startTime:start,endTime:now}})});
-      const d=await r.json();
-      if(!Array.isArray(d))return{coin,candles:[]};
-      return{coin,candles:d.map(c=>({day:new Date(c.t).toLocaleDateString('en-US',{month:'short',day:'numeric'}),vol:parseFloat(c.v||0)*parseFloat(c.c||0)}))};
+      const ctrl=new AbortController();
+      const tid=setTimeout(()=>ctrl.abort(),8000); // 8s per-request timeout
+      try{
+        const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({type:'candleSnapshot',req:{coin,interval:'1d',startTime:start,endTime:now}}),
+          signal:ctrl.signal});
+        const d=await r.json();
+        clearTimeout(tid);
+        if(!Array.isArray(d))return{coin,candles:[]};
+        return{coin,candles:d.map(c=>({day:new Date(c.t).toLocaleDateString('en-US',{month:'short',day:'numeric'}),vol:parseFloat(c.v||0)*parseFloat(c.c||0)}))};
+      }catch(e){clearTimeout(tid);return{coin,candles:[]};}
     }));
     rs.forEach(r=>{if(r.status==='fulfilled'&&r.value)allCandles[r.value.coin]=r.value.candles;});
     if(i+BATCH<assets.length)await new Promise(res=>setTimeout(res,150));
