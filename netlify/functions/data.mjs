@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Data API — serves the cached snapshot from Netlify Blobs
 // Exposed at /api/data via config.path
-// Returns JSON with: { updatedAt, live, histByDay }
+// Returns JSON with: { v:2, updatedAt, coverage, coins, fresh, candles }
 // ─────────────────────────────────────────────────────────────────────────────
 import { getStore } from '@netlify/blobs';
 

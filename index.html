@@ -2,1213 +2,936 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Hyperliquid Vibe Check</title>
+<meta name="description" content="Live Crypto vs TradFi split of Hyperliquid trading volume and open interest across every perp dex — native and HIP-3."/>
+<meta name="theme-color" content="#061515"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:site" content="@PDmytriiev"/>
 <meta name="twitter:creator" content="@PDmytriiev"/>
 <meta name="twitter:title" content="Hyperliquid Vibe Check — Crypto vs TradFi Live Dashboard"/>
-<meta name="twitter:description" content="Real-time trading volume split between Crypto and TradFi on Hyperliquid. Updated hourly."/>
+<meta name="twitter:description" content="Live Crypto vs TradFi split of Hyperliquid volume and open interest across every perp dex."/>
 <meta name="twitter:image" content="https://hyperliquidvibecheck.xyz/og.png"/>
-<meta property="og:card" content="summary_large_image"/>
 <meta property="og:title" content="Hyperliquid Vibe Check — Crypto vs TradFi Live Dashboard"/>
-<meta property="og:description" content="Real-time trading volume split between Crypto and TradFi on Hyperliquid. Updated hourly."/>
+<meta property="og:description" content="Live Crypto vs TradFi split of Hyperliquid volume and open interest across every perp dex."/>
 <meta property="og:image" content="https://hyperliquidvibecheck.xyz/og.png"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
 <meta property="og:url" content="https://hyperliquidvibecheck.xyz"/>
 <meta property="og:type" content="website"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<link rel="icon" type="image/png" href="/favicon.png"/>
-<title>Hyperliquid Vibe Check</title>
-<meta property="og:image" content="https://hyperliquidvibecheck.xyz/og.png"/>
-<meta property="og:url" content="https://hyperliquidvibecheck.xyz"/>
-<meta name="twitter:image" content="https://hyperliquidvibecheck.xyz/og.png"/>
+<link rel="icon" type="image/png" href="data:image/png;base64,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"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&family=Fredoka+One&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
+/* ── Tokens ──────────────────────────────────────────────────────────────── */
 :root{
-  --bg:#0a1410;
-  --surface:#0d1f19;
-  --surf2:#071510;
-  --surf3:#112118;
-  --teal:#4fd2c2;
-  --teal2:#3a9e8f;
-  --white:#f0faf8;
-  --muted:#8db5ae; /* was #6b9990 — lifted for WCAG AA contrast (~4.6:1 on --bg) */
-  --border:rgba(79,210,194,0.14);
-  --border2:rgba(79,210,194,0.07);
-  /* Category colors — much more distinct */
-  --c-btc:#4fd2c2;
-  --c-alt:#f5a623;
-  --c-stocks:#e05c8a;
-  --c-indices:#7b6cf6;
-  --c-comm:#4caf82;
-  --c-fx:#e8833a;
-  --c-preipo:#a78bfa;
+  --bg:#061515;
+  --panel:#0a1c1c;
+  --panel-2:#0d2322;
+  --hover:#102a28;
+  --border:#173030;
+  --border-2:#122626;
+  --text:#e8f2f0;
+  --text-2:#a5b5b3;
+  --text-3:#6c8784;
+  --accent:#3ec1ad;
+  --accent-2:#98fce4;
+  --on-accent:#021816;
+  --crypto:#3ec1ad;
+  --tradfi:#f5a352;
+  --up:#2fd18b;
+  --down:#f2626f;
+  --sans:'Instrument Sans',ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,monospace;
+  --r:8px;
+  --r-sm:6px;
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(79,210,194,0.018) 1px,transparent 1px),linear-gradient(90deg,rgba(79,210,194,0.018) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
-#app{position:relative;z-index:1;max-width:1500px;margin:0 auto;padding:28px 24px}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 420px at 50% -220px,rgba(62,193,173,.09),transparent 70%);background-repeat:no-repeat}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1320px;margin:0 auto;padding:0 var(--s5)}
+.up{color:var(--up)}.down{color:var(--down)}.muted{color:var(--text-3)}
 
-/* ── HEADER ── */
-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid rgba(79,210,194,.18);margin-bottom:28px;flex-wrap:wrap;gap:12px}
-.logo{font-family:'Space Mono',monospace;font-size:24px;font-weight:700;color:var(--teal);letter-spacing:-1px}
-.logo span{color:var(--white)}
-.tagline{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
-.header-meta{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);text-align:right;line-height:1.9}
-.header-meta .hl{color:var(--teal);font-weight:700}
-.live-dot{width:8px;height:8px;background:#4fd2c2;border-radius:50%;display:inline-block;margin-right:6px;animation:pulse 2s ease-in-out infinite;vertical-align:middle}
-@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(79,210,194,.5)}50%{opacity:.5;box-shadow:0 0 0 6px rgba(79,210,194,0)}}
+/* ── Top bar ─────────────────────────────────────────────────────────────── */
+.topbar{position:sticky;top:0;z-index:60;background:rgba(6,21,21,.86);backdrop-filter:saturate(140%) blur(12px);-webkit-backdrop-filter:saturate(140%) blur(12px);border-bottom:1px solid var(--border-2)}
+.topbar .wrap{display:flex;align-items:center;gap:var(--s5);height:60px}
+.brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.brand img{width:28px;height:28px;object-fit:contain}
+.brand b{font-family:var(--mono);font-weight:700;font-size:15px;letter-spacing:-.02em;color:var(--accent-2)}
+.brand b span{color:var(--text)}
+.nav{display:flex;gap:2px}
+.nav button{padding:7px 12px;border-radius:var(--r-sm);color:var(--text-2);font-weight:500;font-size:13.5px;min-height:36px;transition:color .15s,background .15s}
+.nav button:hover{color:var(--text);background:var(--panel)}
+.nav button.active{color:var(--text);background:var(--panel-2);box-shadow:inset 0 0 0 1px var(--border)}
+.nav .cnt{font-family:var(--mono);font-size:11px;color:var(--text-3);margin-left:6px}
+.top-right{margin-left:auto;display:flex;align-items:center;gap:var(--s3)}
+.live{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;color:var(--text-2);padding:6px 10px;border:1px solid var(--border-2);border-radius:999px;white-space:nowrap}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--up);box-shadow:0 0 0 0 rgba(47,209,139,.6);animation:ping 2s infinite}
+.dot.err{background:var(--down);animation:none}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(47,209,139,.55)}70%,100%{box-shadow:0 0 0 6px rgba(47,209,139,0)}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 14px;border-radius:var(--r);font-weight:600;font-size:13px;background:var(--accent);color:var(--on-accent);transition:background .15s;white-space:nowrap}
+.btn:hover{background:#56d3bf}
+.btn svg{width:14px;height:14px}
+.btn.secondary{background:transparent;color:var(--text-2);box-shadow:inset 0 0 0 1px var(--border)}
+.btn.secondary:hover{color:var(--text);background:var(--panel)}
 
-/* ── SETUP BANNER ── */
-.setup-banner{background:rgba(79,210,194,.05);border:1px solid rgba(79,210,194,.18);border-radius:10px;padding:14px 18px;margin-bottom:22px;font-family:'Space Mono',monospace;font-size:11px;line-height:1.9;color:var(--muted)}
-.setup-banner strong{color:var(--teal);display:block;margin-bottom:4px;font-size:12px}
-.setup-banner code{background:rgba(79,210,194,.1);padding:1px 6px;border-radius:3px;color:var(--white)}
-.setup-banner .dismiss{float:right;cursor:pointer;color:var(--teal2)}
+/* ── Ticker tape ─────────────────────────────────────────────────────────── */
+.tape{border-bottom:1px solid var(--border-2);overflow:hidden;height:34px;display:flex;align-items:center;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.tape-track{display:flex;gap:28px;white-space:nowrap;animation:tape 90s linear infinite;padding-left:28px}
+.tape:hover .tape-track{animation-play-state:paused}
+@keyframes tape{to{transform:translateX(-50%)}}
+.tk{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;cursor:pointer}
+.tk .s{color:var(--text-2);font-weight:600}
+.tk .d{font-size:10px;color:var(--text-3)}
 
-/* ── TIMEFRAME ── */
-.controls-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px}
-.controls-left{font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);line-height:1.7}
-.tf-row{display:flex;gap:4px}
-.tf-btn{font-family:'Space Mono',monospace;font-size:11px;padding:10px 18px;min-height:44px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;font-weight:700;letter-spacing:.04em}
-.tf-btn.active{background:var(--teal);border-color:var(--teal);color:#071510}
-.tf-btn:hover:not(.active){border-color:var(--teal2);color:var(--teal)}
-
-/* ── SECTION HEADER — prominent ── */
-.section-header{margin:28px 0 16px;display:flex;align-items:baseline;gap:12px}
-.section-title{font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:var(--white);letter-spacing:-.2px}
-.section-subtitle{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--teal);letter-spacing:.04em;text-transform:uppercase;opacity:.9;font-weight:500}
-.section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--teal2),transparent);opacity:.3;margin-left:8px}
-
-/* ── SUB TAG ── */
-.sub-divider{display:flex;align-items:center;gap:10px;margin:14px 0 10px}
-.sub-divider::after{content:'';flex:1;height:1px;background:var(--border)}
-.sub-tag{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--bg);background:var(--teal2);padding:4px 12px;border-radius:4px;letter-spacing:.08em}
-
-/* ── METRIC ROW ── */
-.metric-row{display:grid;grid-template-columns:1fr 280px;gap:16px;margin-bottom:16px;align-items:stretch}
-
-/* ── KPI CARDS ── */
-.kpi-grid{display:grid;gap:10px;height:100%}
-.kpi-grid.crypto-grid{grid-template-columns:repeat(2,1fr)}
-.kpi-grid.tradfi-grid{grid-template-columns:repeat(5,1fr)}
-/* TradFi scroll wrapper — horizontal scroll on mobile */
-.tradfi-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-
-.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;position:relative;overflow:hidden;transition:border-color .2s,transform .15s;cursor:default}
-.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,var(--teal))}
-.kpi-card::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top left,var(--accent-glow,rgba(79,210,194,.04)),transparent 70%);pointer-events:none}
-.kpi-card:hover{border-color:var(--accent,var(--teal));border-opacity:.4;transform:translateY(-2px)}
-
-/* Parent/total card — more prominent */
-.kpi-card.parent{background:var(--surf3);border:1px solid var(--accent,var(--teal));border-opacity:.3}
-.kpi-card.parent .kpi-pct{font-size:30px;font-variant-numeric:tabular-nums}
-.kpi-card.parent .kpi-abs{font-size:13px;color:var(--white)}
-
-.kpi-cat{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:var(--accent,var(--teal));letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
-.kpi-pct{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--white);line-height:1;margin-bottom:4px;font-variant-numeric:tabular-nums}
-.kpi-abs{font-size:12px;color:var(--teal2);font-family:'Space Mono',monospace;font-weight:400}
-.kpi-metric-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;position:absolute;top:12px;right:12px;opacity:.7}
-
-/* ── PIE CARD ── */
-.pie-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all .2s;height:100%;display:flex;flex-direction:column}
-.pie-card:hover{border-color:rgba(79,210,194,.3);transform:translateY(-1px)}
-.pie-card-title{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.02em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
-.pie-card-title span{font-size:10px;color:var(--teal);opacity:.8;font-family:'Space Mono',monospace}
-.pie-wrap{position:relative;width:100%;max-width:170px;margin:0 auto}
-.pie-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
-.pie-center-val{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--teal);line-height:1}
-.pie-center-lbl{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--muted);margin-top:3px}
-.pie-legend{margin-top:10px;display:flex;flex-direction:column;gap:5px}
-.pie-legend-item{display:flex;align-items:center;gap:7px}
-.pie-legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
-.pie-legend-lbl{color:var(--muted);flex:1;font-family:'DM Sans',sans-serif;font-size:12px}
-.pie-legend-val{color:var(--white);font-family:'Space Mono',monospace;font-size:11px;font-weight:700}
-
-/* ── MODAL ── */
-.modal-overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(16px);background:rgba(7,21,16,.7);animation:fadeIn .2s ease}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal-box{background:#0d1e19;border:1px solid rgba(79,210,194,.3);border-radius:16px;padding:32px;width:min(580px,92vw);position:relative;animation:scaleIn .2s ease;box-shadow:0 0 60px rgba(79,210,194,.08)}
-@keyframes scaleIn{from{transform:scale(.93);opacity:0}to{transform:scale(1);opacity:1}}
-.modal-close{position:absolute;top:16px;right:16px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);cursor:pointer;background:none;border:1px solid var(--border);border-radius:4px;padding:4px 12px;transition:all .15s}
-.modal-close:hover{color:var(--teal);border-color:var(--teal)}
-.modal-title{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
-.modal-subtitle{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);margin-bottom:22px}
-.modal-pie-wrap{position:relative;width:280px;margin:0 auto 22px}
-.modal-pie-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
-.modal-pie-center-val{font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:var(--teal)}
-.modal-pie-center-lbl{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);margin-top:3px}
-.modal-legend{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px}
-.modal-legend-item{display:flex;align-items:center;gap:8px}
-.modal-legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-.modal-legend-lbl{color:var(--muted);flex:1;font-family:'DM Sans',sans-serif;font-size:12px}
-.modal-legend-val{color:var(--white);font-family:'Space Mono',monospace;font-size:11px;font-weight:700}
-
-/* ── STACKED BARS ── */
-.hist-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
-.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px}
-.chart-title{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--white);letter-spacing:.02em;text-transform:uppercase;margin-bottom:16px}
-.hist-notice{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);text-align:center;padding:10px;border:1px dashed var(--border);border-radius:6px;margin-bottom:12px}
-
-/* ── LOADING/ERROR ── */
-.loading{display:flex;align-items:center;justify-content:center;min-height:280px;flex-direction:column;gap:16px}
-.loading-bar{width:200px;height:2px;background:var(--border);border-radius:1px;overflow:hidden}
-.loading-bar::after{content:'';display:block;width:70px;height:100%;background:var(--teal);animation:slide 1.1s ease-in-out infinite}
-@keyframes slide{0%{transform:translateX(-70px)}100%{transform:translateX(200px)}}
-.loading-text{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.12em}
-.error-box{font-family:'Space Mono',monospace;font-size:11px;color:#ff7070;padding:20px;border:1px solid rgba(255,112,112,.2);border-radius:10px;background:rgba(255,112,112,.04);line-height:2}
-.error-box code{background:rgba(255,112,112,.1);padding:1px 6px;border-radius:3px}
-
-/* ── FOOTER ── */
-.footer-left{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);line-height:1.8}
-
-/* ── MOBILE CTA BAR ── */
-.mobile-cta-bar{display:none;position:fixed;bottom:0;left:0;right:0;padding:12px 20px;background:var(--surface);border-top:1px solid var(--border);z-index:100}
-.mobile-cta-bar .hl-btn{width:100%;justify-content:center}
-
-/* ── RESPONSIVE ── */
-@media(max-width:1000px){.metric-row{grid-template-columns:1fr}.hist-grid{grid-template-columns:1fr}}
-@media(max-width:900px) and (min-width:701px){.kpi-grid.tradfi-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:700px){
-  .kpi-grid.crypto-grid{grid-template-columns:repeat(2,1fr)}
-  /* TradFi: horizontal scroll instead of orphan wrap */
-  .tradfi-scroll{margin:0 -24px;padding:0 24px 6px}
-  .kpi-grid.tradfi-grid{grid-template-columns:repeat(5,minmax(140px,1fr));min-width:700px;height:auto}
-  /* Mobile: hide header CTA, show sticky bottom bar */
-  .header-cta{display:none}
-  .mobile-cta-bar{display:block}
-  /* Add bottom padding so footer doesn't hide behind sticky bar */
-  #app{padding-bottom:72px}
-}
-
-
-/* ── VIBE GAUGE ── */
-.vibe-hero{background:linear-gradient(170deg,#0f2820 0%,#071510 55%,#0c1e18 100%);border:1px solid rgba(79,210,194,.25);border-radius:16px;padding:32px 36px 24px;margin-bottom:32px;position:relative;overflow:hidden;text-align:center;box-shadow:0 4px 40px rgba(0,0,0,.4)}
-.vibe-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,rgba(79,210,194,.06) 0%,transparent 65%);pointer-events:none}
-.vibe-title{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--white);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media(max-width:600px){.vibe-title{font-size:11px;letter-spacing:.05em;white-space:normal;text-overflow:clip}}
-.vibe-gauge-wrap{position:relative;width:100%;max-width:520px;margin:0 auto}
-.vibe-gauge-labels{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;padding:0 8px}
-.vibe-label{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
-.vibe-label.tradfi{color:#e8833a}
-.vibe-label.crypto{color:#4fd2c2}
-.vibe-label .pct{font-size:34px;display:block;line-height:1;margin-top:6px;font-weight:700;font-variant-numeric:tabular-nums}
-.vibe-label .abs{font-size:12px;color:var(--muted);font-weight:400;margin-top:5px}
-.vibe-canvas-wrap{position:relative}
-.vibe-needle-label{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;white-space:nowrap}
-.vibe-needle-val{font-family:'Space Mono',monospace;font-size:17px;font-weight:700;color:var(--teal);line-height:1}
-.vibe-needle-sub{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-top:3px;letter-spacing:.06em;text-transform:uppercase}
-.vibe-tagline{font-family:'Space Mono',monospace;font-size:13px;color:var(--teal2);margin-top:14px;letter-spacing:.05em;line-height:1.6;padding:10px 16px;background:rgba(79,210,194,0.06);border-radius:8px;border:1px solid rgba(79,210,194,0.12);display:inline-block}
-.vibe-tagline strong{color:var(--white)}
-.vibe-share-btn{display:inline-flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:10px;padding:6px 14px;border-radius:6px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;margin-top:14px;text-decoration:none}
-.vibe-share-btn:hover{border-color:var(--teal2);color:var(--white)}
-.vibe-share-btn svg{width:12px;height:12px;fill:currentColor;flex-shrink:0}
-.vibe-tf-note{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);opacity:.7;margin-top:10px;letter-spacing:.05em}
-/* ── FOCUS STATES (keyboard nav) ── */
-:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:4px}
-button:focus-visible,.tf-btn:focus-visible,.nav-tab:focus-visible,.hl-btn:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
-
-/* ── NAV TABS ── */
-.nav-tabs{display:flex;gap:4px;margin-bottom:0}
-.nav-tab{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;padding:10px 24px;min-height:40px;border-radius:6px 6px 0 0;border:1px solid var(--border);border-bottom:none;background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;letter-spacing:.04em;position:relative;top:1px}
-.nav-tab.active{background:var(--surface);color:var(--teal);border-color:var(--border)}
-.nav-tab:hover:not(.active){color:var(--white)}
+/* ── Page head ───────────────────────────────────────────────────────────── */
+main{padding:var(--s5) 0 var(--s7)}
 .page{display:none}.page.active{display:block}
-.page-wrap{background:var(--surface);border:1px solid var(--border);border-radius:0 10px 10px 10px;padding:24px;overflow:hidden;margin-bottom:24px}
+.phead{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;margin-bottom:var(--s5)}
+.phead h1{font-size:24px;font-weight:600;letter-spacing:-.02em;line-height:1.2}
+.phead p{color:var(--text-2);margin-top:6px;max-width:680px}
+.seg{display:inline-flex;padding:3px;border-radius:var(--r);background:var(--panel);box-shadow:inset 0 0 0 1px var(--border)}
+.seg button{font-family:var(--mono);font-size:12px;font-weight:600;padding:0 12px;height:30px;border-radius:var(--r-sm);color:var(--text-3)}
+.seg button:hover{color:var(--text)}
+.seg button.active{background:var(--panel-2);color:var(--text);box-shadow:inset 0 0 0 1px var(--border)}
 
-/* ── REFERRAL BUTTON ── */
-.hl-btn{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;padding:11px 24px;min-height:44px;border-radius:8px;background:var(--teal);color:#071510;text-decoration:none;letter-spacing:.04em;transition:all .2s;border:none;cursor:pointer}
-.hl-btn:hover{background:#6fe0d0;transform:translateY(-1px);box-shadow:0 4px 20px rgba(79,210,194,.3)}
-.hl-btn svg{width:14px;height:14px;flex-shrink:0}
+/* ── Panels ──────────────────────────────────────────────────────────────── */
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--r)}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s3);padding:var(--s4) var(--s4) 0;flex-wrap:wrap}
+.ph h2{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.ph p{font-size:12.5px;color:var(--text-3);margin-top:2px}
+.pb{padding:var(--s4)}
+.grid{display:grid;gap:var(--s3)}
+.g2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.g-hero{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+.g-hist{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+.stack>*+*{margin-top:var(--s3)}
+.label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
 
-/* ── FOOTER ── */
-footer{border-top:1px solid var(--border);padding:24px 0 8px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.footer-left{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);line-height:1.8}
-.footer-left a{color:var(--teal);text-decoration:none}
-.footer-left a:hover{color:var(--white)}
-.footer-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.x-link{display:inline-flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;padding:7px 14px;border:1px solid var(--border);border-radius:6px;transition:all .15s}
-.x-link:hover{color:var(--white);border-color:var(--teal2)}
-.x-link svg{width:14px;height:14px;flex-shrink:0;fill:currentColor}
+/* KPI tiles */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s3);margin-bottom:var(--s3)}
+.kpi{padding:var(--s4);display:flex;flex-direction:column;gap:6px;min-height:150px;overflow:hidden}
+.kpi .v{font-family:var(--mono);font-size:24px;font-weight:600;letter-spacing:-.02em;line-height:1.15;font-variant-numeric:tabular-nums}
+.kpi .sub{font-family:var(--mono);font-size:11.5px;color:var(--text-3);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.delta{font-family:var(--mono);font-size:11px;font-weight:600;padding:1px 6px;border-radius:4px}
+.delta.up{background:rgba(47,209,139,.12)}.delta.down{background:rgba(242,98,111,.12)}
+.spark{display:block;width:calc(100% + 32px);height:40px;margin:auto -16px -16px;pointer-events:none}
+.split{display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--border-2);margin-top:auto}
+.split i{display:block;height:100%}
+.split i+i{margin-left:2px}
 
-/* ── DOCS PAGE ── */
-.docs-inner{padding:28px}
-.docs-hero{margin-bottom:28px}
-.docs-hero h2{font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:var(--white);margin-bottom:6px}
-.docs-hero p{font-size:13px;color:var(--muted);line-height:1.7;max-width:680px}
-.docs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px}
-.docs-cat-card{background:var(--surf2);border:1px solid var(--border);border-radius:10px;overflow:hidden}
-.docs-cat-header{padding:14px 16px 10px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:10px}
-.docs-cat-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-.docs-cat-name{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--white);letter-spacing:.04em}
-.docs-cat-count{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-left:auto}
-.docs-cat-parent{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
-.docs-asset-list{padding:12px 16px;display:flex;flex-wrap:wrap;gap:5px}
-.docs-asset-chip{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);background:rgba(79,210,194,.04);border:1px solid var(--border2);border-radius:3px;padding:2px 7px;transition:all .15s}
-.docs-asset-chip:hover{color:var(--teal);border-color:rgba(79,210,194,.2)}
-.docs-asset-chip.hip3{border-color:rgba(245,166,35,.15);color:rgba(245,166,35,.7)}
-.docs-note{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);background:rgba(79,210,194,.04);border:1px solid var(--border2);border-radius:8px;padding:14px 16px;line-height:1.8}
-.docs-note strong{color:var(--teal)}
+/* Gauge */
+.gauge{text-align:center;padding:var(--s4) var(--s4) var(--s5)}
+.g-sides{display:flex;justify-content:space-between;align-items:flex-end;padding:0 var(--s2);margin-top:var(--s2)}
+.g-side{text-align:left}.g-side.r{text-align:right}
+.g-side .k{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text-2)}
+.g-side.r .k{justify-content:flex-end}
+.g-side .k i{width:8px;height:8px;border-radius:2px}
+.g-side .v{font-family:var(--mono);font-size:clamp(26px,3.2vw,36px);font-weight:600;letter-spacing:-.03em;line-height:1.15}
+.g-side .a{font-family:var(--mono);font-size:12px;color:var(--text-3)}
+.g-svg{display:block;width:100%;max-width:360px;margin:-14px auto 0}
+.verdict{display:inline-flex;align-items:center;gap:8px;margin-top:var(--s2);padding:7px 12px;border-radius:999px;background:var(--panel-2);box-shadow:inset 0 0 0 1px var(--border);font-size:13px;color:var(--text-2)}
+.verdict b{color:var(--text);font-weight:600}
+.g-foot{display:flex;justify-content:center;gap:var(--s2);margin-top:var(--s4);flex-wrap:wrap}
+.fine{font-size:11.5px;color:var(--text-3);margin-top:var(--s3)}
 
-/* ── SKELETON LOADER ── */
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.skeleton-section{margin-bottom:28px}
-.skeleton-label{height:12px;width:140px;border-radius:4px;background:var(--surf3);margin-bottom:16px}
-.skeleton-row{display:grid;gap:10px;margin-bottom:10px}
-.skeleton-row.two{grid-template-columns:1fr 280px}
-.skeleton-row.crypto-kpi{grid-template-columns:1fr;gap:10px}
-.skeleton-row.tradfi-kpi{grid-template-columns:repeat(2,1fr);gap:10px}
-@media(min-width:700px){.skeleton-row.tradfi-kpi{grid-template-columns:repeat(3,1fr)}}
-.sk-card{height:90px;border-radius:10px;background:linear-gradient(90deg,var(--surface) 25%,var(--surf3) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.4s ease-in-out infinite;border:1px solid var(--border)}
-.sk-card.parent{height:100px;grid-column:1/-1}
-.sk-card.pie{height:240px;border-radius:10px}
-.sk-card.gauge{height:320px;border-radius:16px;margin-bottom:28px}
-.sk-card.controls{height:64px;border-radius:10px;margin-bottom:28px}
+/* Category leaderboard */
+.lb{width:100%;border-collapse:collapse}
+.lb th{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);text-align:right;padding:0 var(--s4) var(--s2);white-space:nowrap}
+.lb th:first-child,.lb td:first-child{text-align:left}
+.lb td{padding:9px var(--s4);text-align:right;border-top:1px solid var(--border-2);font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.lb tr.row{cursor:pointer;transition:background .12s}
+.lb tr.row:hover{background:var(--hover)}
+.lb tr.grp td{background:var(--panel-2);font-family:var(--sans);font-size:12px;font-weight:600;color:var(--text-2);padding-top:7px;padding-bottom:7px}
+.lb tr.grp td .num{font-weight:600;color:var(--text)}
+.cname{display:flex;align-items:center;gap:10px;font-family:var(--sans);font-size:13.5px;font-weight:500;color:var(--text)}
+.cname i{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.cname small{font-family:var(--mono);font-size:11px;color:var(--text-3);font-weight:400}
+.sharebar{display:flex;align-items:center;gap:10px;justify-content:flex-end}
+.sharebar .track{width:110px;height:6px;border-radius:3px;background:var(--border-2);overflow:hidden}
+.sharebar .track i{display:block;height:100%;border-radius:3px}
+.sharebar .p{min-width:52px;text-align:right;color:var(--text);font-weight:600}
+.topm{color:var(--text-2)}
 
-/* ── HISTORY EMPTY STATE ── */
-.hist-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;gap:10px;border:1px dashed var(--border);border-radius:10px}
-.hist-empty-icon{font-size:28px;opacity:.4}
-.hist-empty-msg{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);text-align:center;line-height:1.8}
+/* Mix bars */
+.mix{display:grid;grid-template-columns:96px minmax(0,1fr) 72px;gap:var(--s3);align-items:center;margin-bottom:var(--s3)}
+.mix .k{font-size:12.5px;font-weight:500;color:var(--text-2)}
+.mix .t{font-family:var(--mono);font-size:12px;text-align:right;color:var(--text-3)}
+.mixbar{display:flex;height:28px;border-radius:var(--r-sm);overflow:hidden;background:var(--border-2)}
+.mixbar i{display:block;height:100%;position:relative;transition:filter .15s}
+.mixbar i+i{box-shadow:inset 1px 0 0 var(--panel)}
+.mixbar i:hover{filter:brightness(1.15)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px}
+.legend span{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-2)}
+.legend i{width:8px;height:8px;border-radius:2px}
+.insight{font-size:13px;color:var(--text-2);margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--border-2)}
+.insight b{color:var(--text);font-weight:600}
+
+/* Charts */
+.chart{position:relative;height:280px}
+.empty{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--text-3);font-size:12.5px;text-align:center}
+.spin{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);border-top-color:var(--accent);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.prog{width:160px;height:3px;border-radius:2px;background:var(--border-2);overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);transition:width .3s}
+
+/* Tables */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.t{width:100%;border-collapse:collapse}
+.t th{position:sticky;top:0;z-index:1;background:var(--panel);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);text-align:right;padding:10px var(--s4);border-bottom:1px solid var(--border);white-space:nowrap}
+.t th.l,.t td.l{text-align:left}
+.t th.sort{cursor:pointer;user-select:none}
+.t th.sort:hover,.t th.sorted{color:var(--text)}
+.t th .arr{color:var(--accent);margin-left:4px}
+.t td{padding:10px var(--s4);text-align:right;border-bottom:1px solid var(--border-2);font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--text)}
+.t tbody tr{transition:background .12s}
+.t tbody tr:hover{background:var(--hover)}
+.t tbody tr:last-child td{border-bottom:0}
+.t .rank{color:var(--text-3);width:36px;padding-right:0}
+.mk{display:flex;align-items:center;gap:8px}
+.mk b{font-weight:600}
+.badge{font-family:var(--mono);font-size:10.5px;font-weight:500;padding:1px 6px;border-radius:4px;color:var(--text-3);box-shadow:inset 0 0 0 1px var(--border)}
+.badge.hip3{color:#f5c08a;box-shadow:inset 0 0 0 1px rgba(245,163,82,.28)}
+.ctag{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-size:12.5px;color:var(--text-2)}
+.ctag i{width:8px;height:8px;border-radius:2px}
+.vbar{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.vbar .track{width:64px;height:4px;border-radius:2px;background:var(--border-2);overflow:hidden}
+.vbar .track i{display:block;height:100%}
+
+/* Filters */
+.filters{display:flex;flex-direction:column;gap:var(--s3);padding:var(--s4);border-bottom:1px solid var(--border)}
+.frow{display:flex;gap:var(--s2);flex-wrap:wrap}
+.search{position:relative;flex:1;min-width:220px}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--text-3);pointer-events:none}
+.search input,.select{width:100%;height:38px;border-radius:var(--r);border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13.5px;padding:0 12px 0 36px;outline:none;transition:border-color .15s}
+.select{width:auto;padding:0 32px 0 12px;appearance:none;-webkit-appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236c8784' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+.search input:focus,.select:focus{border-color:var(--accent)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px;border-radius:999px;font-size:12.5px;font-weight:500;color:var(--text-2);box-shadow:inset 0 0 0 1px var(--border);transition:all .12s}
+.chip i{width:7px;height:7px;border-radius:50%}
+.chip:hover{color:var(--text);background:var(--panel-2)}
+.chip.active{color:var(--text);background:var(--panel-2);box-shadow:inset 0 0 0 1px var(--c,var(--accent))}
+.chip .n{font-family:var(--mono);font-size:11px;color:var(--text-3)}
+.tfoot{display:flex;justify-content:space-between;align-items:center;gap:var(--s3);padding:var(--s3) var(--s4);border-top:1px solid var(--border);font-family:var(--mono);font-size:12px;color:var(--text-3);flex-wrap:wrap}
+
+/* Index page */
+.idx{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--s3)}
+.idx .panel{display:flex;flex-direction:column}
+.idx .tags{display:flex;flex-wrap:wrap;gap:4px;padding:0 var(--s4) var(--s4);max-height:240px;overflow:auto}
+.tag{font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:4px;color:var(--text-2);background:var(--bg);box-shadow:inset 0 0 0 1px var(--border-2)}
+.tag.hip3{color:#f5c08a}
+.prose{font-size:13.5px;color:var(--text-2);line-height:1.7}
+.prose b{color:var(--text);font-weight:600}
+.prose code{font-family:var(--mono);font-size:12px;padding:1px 5px;border-radius:4px;background:var(--bg);box-shadow:inset 0 0 0 1px var(--border-2);color:var(--accent-2)}
+.prose ul{padding-left:18px;margin-top:8px}
+.prose li+li{margin-top:4px}
+.dexrow{display:flex;flex-wrap:wrap;gap:var(--s2);margin-top:var(--s3)}
+.dexrow span{font-size:12.5px;padding:6px 10px;border-radius:var(--r-sm);background:var(--bg);box-shadow:inset 0 0 0 1px var(--border-2);color:var(--text-2)}
+.dexrow b{font-family:var(--mono);color:var(--text);font-weight:600;margin-right:6px}
+
+/* Skeleton / error */
+.sk{border-radius:var(--r);background:linear-gradient(90deg,var(--panel) 25%,var(--panel-2) 50%,var(--panel) 75%);background-size:200% 100%;animation:sh 1.4s infinite;border:1px solid var(--border-2)}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.err{padding:var(--s4);border-radius:var(--r);border:1px solid rgba(242,98,111,.3);background:rgba(242,98,111,.06);color:#ffb3ba;font-size:13px;line-height:1.8}
+
+/* Footer status bar */
+footer{border-top:1px solid var(--border-2);padding:var(--s4) 0 var(--s5);font-size:12.5px;color:var(--text-3)}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:var(--s3);flex-wrap:wrap}
+footer a{color:var(--text-2)}footer a:hover{color:var(--accent-2)}
+footer .stat{display:flex;align-items:center;gap:var(--s4);font-family:var(--mono);font-size:11.5px;flex-wrap:wrap}
+footer .stat span{display:inline-flex;align-items:center;gap:6px}
+footer .stat i{width:6px;height:6px;border-radius:50%;background:var(--up)}
+.mcta{display:none}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,8px);opacity:0;transition:all .2s;background:var(--panel-2);border:1px solid var(--border);padding:8px 14px;border-radius:var(--r);font-size:13px;z-index:200;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media(max-width:1080px){
+  .g-hero,.g-hist,.g2{grid-template-columns:minmax(0,1fr)}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .wrap{padding:0 var(--s4)}
+  .topbar .wrap{height:auto;flex-wrap:wrap;gap:var(--s2);padding-top:10px;padding-bottom:10px}
+  .nav{order:3;width:100%;overflow-x:auto}
+  .top-right .btn{display:none}
+  .phead h1{font-size:20px}
+  .kpi{min-height:136px}
+  .kpi .v{font-size:19px}
+  .lb .hide-sm,.t .hide-sm{display:none}
+  .sharebar .track{width:56px}
+  .mix{grid-template-columns:72px minmax(0,1fr)}
+  .mix .t{display:none}
+  .chart{height:230px}
+  .mcta{display:block;position:fixed;left:0;right:0;bottom:0;z-index:70;padding:10px var(--s4) calc(10px + env(safe-area-inset-bottom));background:rgba(6,21,21,.92);backdrop-filter:blur(10px);border-top:1px solid var(--border)}
+  .mcta .btn{width:100%;height:44px}
+  footer{padding-bottom:84px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.tape-track{transform:none}}
 </style>
 </head>
 <body>
-<div id="app">
-  <header>
-    <div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <img src="/logo.png" alt="VibeCheck logo" style="width:48px;height:48px;object-fit:contain;display:block;flex-shrink:0"/>
-        <div>
-          <div style="font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--teal);letter-spacing:-1px">VIBE<span style="color:var(--white)">CHECK</span></div>
-          <div class="tagline">Hyperliquid Markets</div>
-        </div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-      <div class="header-cta">
-        <a href="https://app.hyperliquid.xyz/join/OGCAPITAL" target="_blank" class="hl-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Trade on Hyperliquid
-        </a>
-      </div>
-      <div class="header-meta" id="header-meta"><span class="live-dot"></span>Connecting...</div>
-    </div>
-  </header>
-  <div id="banner"></div>
-
-  <!-- NAV -->
-  <div style="display:flex;align-items:flex-end;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px">
-    <div class="nav-tabs">
-      <button class="nav-tab active" onclick="switchPage('dashboard')">Dashboard</button>
-      <button class="nav-tab" onclick="switchPage('docs')">Asset Index</button>
-    </div>
-  </div>
-
-  <!-- DASHBOARD PAGE -->
-  <div class="page active" id="page-dashboard">
-    <div id="main"></div>
-  </div>
-
-  <!-- DOCS PAGE -->
-  <div class="page" id="page-docs">
-    <div class="docs-inner" id="docs-content">
-      <div class="loading"><div class="loading-bar"></div><div class="loading-text">LOADING ASSET INDEX...</div></div>
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-left">
-      Built by <a href="https://x.com/PDmytriiev" target="_blank">@PDmytriiev</a> &nbsp;·&nbsp;
-      Data from <a href="https://app.hyperliquid.xyz" target="_blank">Hyperliquid</a> &nbsp;·&nbsp;
-      Refreshes hourly &nbsp;·&nbsp; Not financial advice
-    </div>
-    <div class="footer-right">
-      <a href="https://x.com/PDmytriiev" target="_blank" class="x-link">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L2.333 2.25H8.98l4.013 5.297zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        @PDmytriiev
-      </a>
-    </div>
-  </footer>
-</div>
-
-<!-- MOBILE STICKY CTA -->
-<div class="mobile-cta-bar">
-  <a href="https://app.hyperliquid.xyz/join/OGCAPITAL" target="_blank" class="hl-btn">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-    Trade on Hyperliquid
-  </a>
-</div>
-
-<!-- MODAL -->
-<div id="modal" style="display:none" onclick="closeModal(event)">
-  <div class="modal-overlay">
-    <div class="modal-box" onclick="event.stopPropagation()">
-      <button class="modal-close" onclick="closeModal()" aria-label="Close breakdown modal">✕ Close</button>
-      <div class="modal-title" id="modal-title"></div>
-      <div class="modal-subtitle" id="modal-subtitle"></div>
-      <div class="modal-pie-wrap">
-        <canvas id="modal-canvas" height="280"></canvas>
-        <div class="modal-pie-center">
-          <div class="modal-pie-center-val" id="modal-center-val"></div>
-          <div class="modal-pie-center-lbl" id="modal-center-lbl"></div>
-        </div>
-      </div>
-      <div class="modal-legend" id="modal-legend"></div>
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#overview" onclick="switchPage('overview');return false" aria-label="Vibe Check home"><img src="data:image/png;base64,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" alt="Vibe Check logo"/><b>VIBE<span>CHECK</span></b></a>
+    <nav class="nav" role="tablist" aria-label="Sections">
+      <button class="active" data-page="overview" role="tab">Overview</button>
+      <button data-page="markets" role="tab">Markets<span class="cnt" id="mk-cnt"></span></button>
+      <button data-page="method" role="tab">Asset index</button>
+    </nav>
+    <div class="top-right">
+      <div class="live" id="status"><span class="dot"></span>Connecting…</div>
+      <a class="btn" href="https://app.hyperliquid.xyz/join/OGCAPITAL" target="_blank" rel="noopener">Trade on Hyperliquid
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
     </div>
   </div>
 </div>
+<div class="tape" id="tape" aria-label="Top markets by 24h volume"></div>
+
+<main class="wrap">
+  <section class="page active" id="page-overview"><div id="overview"></div></section>
+  <section class="page" id="page-markets"><div id="markets"></div></section>
+  <section class="page" id="page-method"><div id="method"></div></section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="stat" id="foot-stat"></div>
+    <div>Built by <a href="https://x.com/PDmytriiev" target="_blank" rel="noopener">@PDmytriiev</a> · Data from the <a href="https://app.hyperliquid.xyz" target="_blank" rel="noopener">Hyperliquid</a> public API · Not financial advice</div>
+  </div>
+</footer>
+<div class="mcta"><a class="btn" href="https://app.hyperliquid.xyz/join/OGCAPITAL" target="_blank" rel="noopener">Trade on Hyperliquid</a></div>
+<div class="toast" id="toast"></div>
 
 <script>
-// ─────────────────────────────────────────────────────────────────────────────
+// ═════════════════════════════════════════════════════════════════════════════
 // CONFIG
-// ─────────────────────────────────────────────────────────────────────────────
-const HIP3_DEXES = ['xyz','flx','vntl','hyna','km','cash','para'];
+// ═════════════════════════════════════════════════════════════════════════════
+const IS_LOCAL = ['localhost','127.0.0.1'].includes(location.hostname) || location.protocol==='file:';
+const HL_API   = IS_LOCAL ? 'https://api.hyperliquid.xyz/info' : '/api/hl';
+const REFRESH_SEC = 300;
 
-const CC = {BTC:'#4fd2c2',Altcoins:'#f5a623',Stocks:'#e05c8a',Indices:'#7b6cf6',Commodities:'#4caf82',FX:'#e8833a','Pre-IPO':'#a78bfa'};
-
-const CRYPTO_CATS = [
-  {key:'BTC',     label:'BTC',       color:CC.BTC,         isParent:false},
-  {key:'Altcoins',label:'Altcoins',  color:CC.Altcoins,    isParent:false},
-  {key:'Crypto',  label:'All Crypto',color:'#4fd2c2',      isParent:true},
+// Categories. Every live market gets exactly one; groups roll up to Crypto / TradFi.
+const CATS = [
+  {key:'BTC',        group:'Crypto', color:'#3ec1ad', desc:'Bitcoin perps on any dex.'},
+  {key:'ETH',        group:'Crypto', color:'#7b8cff', desc:'Ether perps on any dex.'},
+  {key:'HYPE',       group:'Crypto', color:'#98fce4', desc:'HYPE — Hyperliquid’s own token.'},
+  {key:'Altcoins',   group:'Crypto', color:'#4aa8e8', desc:'L1s/L2s, DeFi, AI, infra, plus crypto index products (TOTAL2, OTHERS, BTCD, BVIV) and pre-launch tokens.'},
+  {key:'Memes',      group:'Crypto', color:'#a6d94a', desc:'Memecoins and community tokens (DOGE, kPEPE, FARTCOIN, TRUMP, PENGU, PURR…).'},
+  {key:'Stocks',     group:'TradFi', color:'#ee6a86', desc:'Single-name equities — US, Korea, Japan, China, India. Unknown HIP-3 listings default here.'},
+  {key:'ETFs',       group:'TradFi', color:'#f5a352', desc:'Sector, country, bond and leveraged ETFs (SOXL, SMH, EWY, KORU, TLT…).'},
+  {key:'Indices',    group:'TradFi', color:'#f2cf5b', desc:'Equity indices and index-style baskets (SP500, XYZ100, KR200, JP225, NIFTY, DRAM).'},
+  {key:'Commodities',group:'TradFi', color:'#c4925f', desc:'Metals, energy and ags (GOLD, SILVER, CL, BRENTOIL, NATGAS, COPPER…).'},
+  {key:'FX & Rates', group:'TradFi', color:'#e07ad6', desc:'Currencies and US Treasury yields (EUR, JPY, GBP, 2Y, 10Y, 30Y).'},
+  {key:'Pre-IPO',    group:'TradFi', color:'#a48cf6', desc:'Private companies — SpaceX, Anthropic, OpenAI, CXMT, Shein, Oura, Jio, Unitree…'},
 ];
-const TRADFI_CATS = [
-  {key:'Stocks',      label:'Stocks',     color:CC.Stocks,      isParent:false},
-  {key:'Indices',     label:'Indices',    color:CC.Indices,     isParent:false},
-  {key:'Commodities', label:'Commod.',    color:CC.Commodities, isParent:false},
-  {key:'FX',          label:'FX',         color:CC.FX,          isParent:false},
-  {key:'Pre-IPO',     label:'Pre-IPO',    color:CC['Pre-IPO'],  isParent:false},
-  {key:'TradFi',      label:'All TradFi', color:'#c87ef0',      isParent:true},
-];
-const ALL_CATS = [...CRYPTO_CATS,...TRADFI_CATS];
-const PIE_CRYPTO = CRYPTO_CATS.filter(c=>!c.isParent);
-const PIE_TRADFI = TRADFI_CATS.filter(c=>!c.isParent);
-const BAR_CATS   = [...PIE_CRYPTO,...PIE_TRADFI];
+const CAT = Object.fromEntries(CATS.map(c=>[c.key,c]));
+const GROUPS = {Crypto:{color:'#3ec1ad'}, TradFi:{color:'#f5a352'}};
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ASSET CATEGORIES MAP
-// ─────────────────────────────────────────────────────────────────────────────
-const AC = {"BTC":{"p":"Crypto","s":"BTC"},"ETH":{"p":"Crypto","s":"Altcoins"},"SOL":{"p":"Crypto","s":"Altcoins"},"BNB":{"p":"Crypto","s":"Altcoins"},"XRP":{"p":"Crypto","s":"Altcoins"},"ADA":{"p":"Crypto","s":"Altcoins"},"AVAX":{"p":"Crypto","s":"Altcoins"},"TRX":{"p":"Crypto","s":"Altcoins"},"TON":{"p":"Crypto","s":"Altcoins"},"DOT":{"p":"Crypto","s":"Altcoins"},"NEAR":{"p":"Crypto","s":"Altcoins"},"ATOM":{"p":"Crypto","s":"Altcoins"},"APT":{"p":"Crypto","s":"Altcoins"},"SUI":{"p":"Crypto","s":"Altcoins"},"SEI":{"p":"Crypto","s":"Altcoins"},"INJ":{"p":"Crypto","s":"Altcoins"},"TIA":{"p":"Crypto","s":"Altcoins"},"TAO":{"p":"Crypto","s":"Altcoins"},"HYPE":{"p":"Crypto","s":"Altcoins"},"HBAR":{"p":"Crypto","s":"Altcoins"},"XLM":{"p":"Crypto","s":"Altcoins"},"ALGO":{"p":"Crypto","s":"Altcoins"},"IOTA":{"p":"Crypto","s":"Altcoins"},"FTM":{"p":"Crypto","s":"Altcoins"},"CELO":{"p":"Crypto","s":"Altcoins"},"FTT":{"p":"Crypto","s":"Altcoins"},"BSV":{"p":"Crypto","s":"Altcoins"},"LTC":{"p":"Crypto","s":"Altcoins"},"BCH":{"p":"Crypto","s":"Altcoins"},"ICP":{"p":"Crypto","s":"Altcoins"},"XMR":{"p":"Crypto","s":"Altcoins"},"DASH":{"p":"Crypto","s":"Altcoins"},"ZEC":{"p":"Crypto","s":"Altcoins"},"NEO":{"p":"Crypto","s":"Altcoins"},"ZEN":{"p":"Crypto","s":"Altcoins"},"FIL":{"p":"Crypto","s":"Altcoins"},"KAS":{"p":"Crypto","s":"Altcoins"},"GAS":{"p":"Crypto","s":"Altcoins"},"AR":{"p":"Crypto","s":"Altcoins"},"STX":{"p":"Crypto","s":"Altcoins"},"ORDI":{"p":"Crypto","s":"Altcoins"},"RUNE":{"p":"Crypto","s":"Altcoins"},"MINA":{"p":"Crypto","s":"Altcoins"},"POLYX":{"p":"Crypto","s":"Altcoins"},"MNT":{"p":"Crypto","s":"Altcoins"},"USTC":{"p":"Crypto","s":"Altcoins"},"PAXG":{"p":"Crypto","s":"Altcoins"},"MON":{"p":"Crypto","s":"Altcoins"},"BERA":{"p":"Crypto","s":"Altcoins"},"IP":{"p":"Crypto","s":"Altcoins"},"OM":{"p":"Crypto","s":"Altcoins"},"LAYER":{"p":"Crypto","s":"Altcoins"},"MOVE":{"p":"Crypto","s":"Altcoins"},"INIT":{"p":"Crypto","s":"Altcoins"},"NXPC":{"p":"Crypto","s":"Altcoins"},"0G":{"p":"Crypto","s":"Altcoins"},"HEMI":{"p":"Crypto","s":"Altcoins"},"LINEA":{"p":"Crypto","s":"Altcoins"},"APEX":{"p":"Crypto","s":"Altcoins"},"MEGA":{"p":"Crypto","s":"Altcoins"},"FOGO":{"p":"Crypto","s":"Altcoins"},"S":{"p":"Crypto","s":"Altcoins"},"STRAX":{"p":"Crypto","s":"Altcoins"},"OP":{"p":"Crypto","s":"Altcoins"},"ARB":{"p":"Crypto","s":"Altcoins"},"MATIC":{"p":"Crypto","s":"Altcoins"},"IMX":{"p":"Crypto","s":"Altcoins"},"STRK":{"p":"Crypto","s":"Altcoins"},"ZK":{"p":"Crypto","s":"Altcoins"},"BLAST":{"p":"Crypto","s":"Altcoins"},"MANTA":{"p":"Crypto","s":"Altcoins"},"ZETA":{"p":"Crypto","s":"Altcoins"},"ALT":{"p":"Crypto","s":"Altcoins"},"DYM":{"p":"Crypto","s":"Altcoins"},"SAGA":{"p":"Crypto","s":"Altcoins"},"LISTA":{"p":"Crypto","s":"Altcoins"},"OMNI":{"p":"Crypto","s":"Altcoins"},"SCR":{"p":"Crypto","s":"Altcoins"},"POL":{"p":"Crypto","s":"Altcoins"},"MET":{"p":"Crypto","s":"Altcoins"},"HYPER":{"p":"Crypto","s":"Altcoins"},"SOPH":{"p":"Crypto","s":"Altcoins"},"AVNT":{"p":"Crypto","s":"Altcoins"},"CC":{"p":"Crypto","s":"Altcoins"},"UNI":{"p":"Crypto","s":"Altcoins"},"AAVE":{"p":"Crypto","s":"Altcoins"},"MKR":{"p":"Crypto","s":"Altcoins"},"CRV":{"p":"Crypto","s":"Altcoins"},"LDO":{"p":"Crypto","s":"Altcoins"},"SNX":{"p":"Crypto","s":"Altcoins"},"ONDO":{"p":"Crypto","s":"Altcoins"},"ENA":{"p":"Crypto","s":"Altcoins"},"PENDLE":{"p":"Crypto","s":"Altcoins"},"JUP":{"p":"Crypto","s":"Altcoins"},"EIGEN":{"p":"Crypto","s":"Altcoins"},"JTO":{"p":"Crypto","s":"Altcoins"},"PYTH":{"p":"Crypto","s":"Altcoins"},"ETHFI":{"p":"Crypto","s":"Altcoins"},"REZ":{"p":"Crypto","s":"Altcoins"},"GMX":{"p":"Crypto","s":"Altcoins"},"STG":{"p":"Crypto","s":"Altcoins"},"SUSHI":{"p":"Crypto","s":"Altcoins"},"COMP":{"p":"Crypto","s":"Altcoins"},"FXS":{"p":"Crypto","s":"Altcoins"},"BNT":{"p":"Crypto","s":"Altcoins"},"RDNT":{"p":"Crypto","s":"Altcoins"},"UMA":{"p":"Crypto","s":"Altcoins"},"BADGER":{"p":"Crypto","s":"Altcoins"},"RSR":{"p":"Crypto","s":"Altcoins"},"NTRN":{"p":"Crypto","s":"Altcoins"},"BANANA":{"p":"Crypto","s":"Altcoins"},"MORPHO":{"p":"Crypto","s":"Altcoins"},"RESOLV":{"p":"Crypto","s":"Altcoins"},"SYRUP":{"p":"Crypto","s":"Altcoins"},"SKY":{"p":"Crypto","s":"Altcoins"},"USUAL":{"p":"Crypto","s":"Altcoins"},"AERO":{"p":"Crypto","s":"Altcoins"},"DYDX":{"p":"Crypto","s":"Altcoins"},"FET":{"p":"Crypto","s":"Altcoins"},"RNDR":{"p":"Crypto","s":"Altcoins"},"RENDER":{"p":"Crypto","s":"Altcoins"},"WLD":{"p":"Crypto","s":"Altcoins"},"VIRTUAL":{"p":"Crypto","s":"Altcoins"},"AI16Z":{"p":"Crypto","s":"Altcoins"},"ZEREBRO":{"p":"Crypto","s":"Altcoins"},"GRIFFAIN":{"p":"Crypto","s":"Altcoins"},"AIXBT":{"p":"Crypto","s":"Altcoins"},"AI":{"p":"Crypto","s":"Altcoins"},"KAITO":{"p":"Crypto","s":"Altcoins"},"PROMPT":{"p":"Crypto","s":"Altcoins"},"ASTER":{"p":"Crypto","s":"Altcoins"},"BIO":{"p":"Crypto","s":"Altcoins"},"FARTCOIN":{"p":"Crypto","s":"Altcoins"},"DOGE":{"p":"Crypto","s":"Altcoins"},"kSHIB":{"p":"Crypto","s":"Altcoins"},"WIF":{"p":"Crypto","s":"Altcoins"},"kPEPE":{"p":"Crypto","s":"Altcoins"},"kBONK":{"p":"Crypto","s":"Altcoins"},"kFLOKI":{"p":"Crypto","s":"Altcoins"},"POPCAT":{"p":"Crypto","s":"Altcoins"},"TRUMP":{"p":"Crypto","s":"Altcoins"},"MELANIA":{"p":"Crypto","s":"Altcoins"},"PNUT":{"p":"Crypto","s":"Altcoins"},"GOAT":{"p":"Crypto","s":"Altcoins"},"MOODENG":{"p":"Crypto","s":"Altcoins"},"NEIROETH":{"p":"Crypto","s":"Altcoins"},"kNEIRO":{"p":"Crypto","s":"Altcoins"},"BRETT":{"p":"Crypto","s":"Altcoins"},"MEW":{"p":"Crypto","s":"Altcoins"},"MEME":{"p":"Crypto","s":"Altcoins"},"CHILLGUY":{"p":"Crypto","s":"Altcoins"},"TURBO":{"p":"Crypto","s":"Altcoins"},"MYRO":{"p":"Crypto","s":"Altcoins"},"BOME":{"p":"Crypto","s":"Altcoins"},"HPOS":{"p":"Crypto","s":"Altcoins"},"kDOGS":{"p":"Crypto","s":"Altcoins"},"HMSTR":{"p":"Crypto","s":"Altcoins"},"PURR":{"p":"Crypto","s":"Altcoins"},"ANIME":{"p":"Crypto","s":"Altcoins"},"TST":{"p":"Crypto","s":"Altcoins"},"VINE":{"p":"Crypto","s":"Altcoins"},"JELLY":{"p":"Crypto","s":"Altcoins"},"DOOD":{"p":"Crypto","s":"Altcoins"},"LAUNCHCOIN":{"p":"Crypto","s":"Altcoins"},"PUMP":{"p":"Crypto","s":"Altcoins"},"YZY":{"p":"Crypto","s":"Altcoins"},"WLFI":{"p":"Crypto","s":"Altcoins"},"SPX":{"p":"Crypto","s":"Altcoins"},"BLUR":{"p":"Crypto","s":"Altcoins"},"GALA":{"p":"Crypto","s":"Altcoins"},"YGG":{"p":"Crypto","s":"Altcoins"},"ILV":{"p":"Crypto","s":"Altcoins"},"SUPER":{"p":"Crypto","s":"Altcoins"},"BIGTIME":{"p":"Crypto","s":"Altcoins"},"XAI":{"p":"Crypto","s":"Altcoins"},"MAVIA":{"p":"Crypto","s":"Altcoins"},"PIXEL":{"p":"Crypto","s":"Altcoins"},"PANDORA":{"p":"Crypto","s":"Altcoins"},"ACE":{"p":"Crypto","s":"Altcoins"},"NFTI":{"p":"Crypto","s":"Altcoins"},"GMT":{"p":"Crypto","s":"Altcoins"},"AXS":{"p":"Crypto","s":"Altcoins"},"PENGU":{"p":"Crypto","s":"Altcoins"},"ZORA":{"p":"Crypto","s":"Altcoins"},"SAND":{"p":"Crypto","s":"Altcoins"},"LINK":{"p":"Crypto","s":"Altcoins"},"APE":{"p":"Crypto","s":"Altcoins"},"CFX":{"p":"Crypto","s":"Altcoins"},"TRB":{"p":"Crypto","s":"Altcoins"},"LOOM":{"p":"Crypto","s":"Altcoins"},"OGN":{"p":"Crypto","s":"Altcoins"},"ARK":{"p":"Crypto","s":"Altcoins"},"REQ":{"p":"Crypto","s":"Altcoins"},"ORBS":{"p":"Crypto","s":"Altcoins"},"TNSR":{"p":"Crypto","s":"Altcoins"},"MERL":{"p":"Crypto","s":"Altcoins"},"NOT":{"p":"Crypto","s":"Altcoins"},"IO":{"p":"Crypto","s":"Altcoins"},"W":{"p":"Crypto","s":"Altcoins"},"GRASS":{"p":"Crypto","s":"Altcoins"},"CATI":{"p":"Crypto","s":"Altcoins"},"ME":{"p":"Crypto","s":"Altcoins"},"VVV":{"p":"Crypto","s":"Altcoins"},"NIL":{"p":"Crypto","s":"Altcoins"},"BABY":{"p":"Crypto","s":"Altcoins"},"WCT":{"p":"Crypto","s":"Altcoins"},"XPL":{"p":"Crypto","s":"Altcoins"},"SKR":{"p":"Crypto","s":"Altcoins"},"LIT":{"p":"Crypto","s":"Altcoins"},"PROVE":{"p":"Crypto","s":"Altcoins"},"2Z":{"p":"Crypto","s":"Altcoins"},"MAV":{"p":"Crypto","s":"Altcoins"},"OX":{"p":"Crypto","s":"Altcoins"},"FRIEND":{"p":"Crypto","s":"Altcoins"},"SHIA":{"p":"Crypto","s":"Altcoins"},"CYBER":{"p":"Crypto","s":"Altcoins"},"ZRO":{"p":"Crypto","s":"Altcoins"},"BLZ":{"p":"Crypto","s":"Altcoins"},"CAKE":{"p":"Crypto","s":"Altcoins"},"PEOPLE":{"p":"Crypto","s":"Altcoins"},"ENS":{"p":"Crypto","s":"Altcoins"},"ETC":{"p":"Crypto","s":"Altcoins"},"RLB":{"p":"Crypto","s":"Altcoins"},"UNIBOT":{"p":"Crypto","s":"Altcoins"},"kLUNC":{"p":"Crypto","s":"Altcoins"},"CANTO":{"p":"Crypto","s":"Altcoins"},"STABLE":{"p":"Crypto","s":"Altcoins"},"STBL":{"p":"Crypto","s":"Altcoins"},"AZTEC":{"p":"Crypto","s":"Altcoins"},"xyz:AAPL":{"p":"TradFi","s":"Stocks"},"xyz:AMD":{"p":"TradFi","s":"Stocks"},"xyz:AMZN":{"p":"TradFi","s":"Stocks"},"xyz:BABA":{"p":"TradFi","s":"Stocks"},"xyz:COIN":{"p":"TradFi","s":"Stocks"},"xyz:COST":{"p":"TradFi","s":"Stocks"},"xyz:CRCL":{"p":"TradFi","s":"Stocks"},"xyz:CRWV":{"p":"TradFi","s":"Stocks"},"xyz:EWJ":{"p":"TradFi","s":"Stocks"},"xyz:EWY":{"p":"TradFi","s":"Stocks"},"xyz:GME":{"p":"TradFi","s":"Stocks"},"xyz:GOOGL":{"p":"TradFi","s":"Stocks"},"xyz:HIMS":{"p":"TradFi","s":"Stocks"},"xyz:HOOD":{"p":"TradFi","s":"Stocks"},"xyz:HYUNDAI":{"p":"TradFi","s":"Stocks"},"xyz:INTC":{"p":"TradFi","s":"Stocks"},"xyz:KIOXIA":{"p":"TradFi","s":"Stocks"},"xyz:LLY":{"p":"TradFi","s":"Stocks"},"xyz:META":{"p":"TradFi","s":"Stocks"},"xyz:MSFT":{"p":"TradFi","s":"Stocks"},"xyz:MSTR":{"p":"TradFi","s":"Stocks"},"xyz:MU":{"p":"TradFi","s":"Stocks"},"xyz:NFLX":{"p":"TradFi","s":"Stocks"},"xyz:NVDA":{"p":"TradFi","s":"Stocks"},"xyz:ORCL":{"p":"TradFi","s":"Stocks"},"xyz:PLTR":{"p":"TradFi","s":"Stocks"},"xyz:RIVN":{"p":"TradFi","s":"Stocks"},"xyz:SKHX":{"p":"TradFi","s":"Stocks"},"xyz:SMSN":{"p":"TradFi","s":"Stocks"},"xyz:SNDK":{"p":"TradFi","s":"Stocks"},"xyz:SOFTBANK":{"p":"TradFi","s":"Stocks"},"xyz:TSLA":{"p":"TradFi","s":"Stocks"},"xyz:TSM":{"p":"TradFi","s":"Stocks"},"xyz:URNM":{"p":"TradFi","s":"Stocks"},"xyz:USAR":{"p":"TradFi","s":"Stocks"},"xyz:DXY":{"p":"TradFi","s":"Indices"},"xyz:JP225":{"p":"TradFi","s":"Indices"},"xyz:KR200":{"p":"TradFi","s":"Indices"},"xyz:SP500":{"p":"TradFi","s":"Indices"},"xyz:VIX":{"p":"TradFi","s":"Indices"},"xyz:XYZ100":{"p":"TradFi","s":"Indices"},"xyz:ALUMINIUM":{"p":"TradFi","s":"Commodities"},"xyz:BRENTOIL":{"p":"TradFi","s":"Commodities"},"xyz:CL":{"p":"TradFi","s":"Commodities"},"xyz:COPPER":{"p":"TradFi","s":"Commodities"},"xyz:GOLD":{"p":"TradFi","s":"Commodities"},"xyz:NATGAS":{"p":"TradFi","s":"Commodities"},"xyz:PALLADIUM":{"p":"TradFi","s":"Commodities"},"xyz:PLATINUM":{"p":"TradFi","s":"Commodities"},"xyz:SILVER":{"p":"TradFi","s":"Commodities"},"xyz:URANIUM":{"p":"TradFi","s":"Commodities"},"xyz:EUR":{"p":"TradFi","s":"FX"},"xyz:JPY":{"p":"TradFi","s":"FX"},"flx:COIN":{"p":"TradFi","s":"Stocks"},"flx:CRCL":{"p":"TradFi","s":"Stocks"},"flx:NVDA":{"p":"TradFi","s":"Stocks"},"flx:TSLA":{"p":"TradFi","s":"Stocks"},"flx:COPPER":{"p":"TradFi","s":"Commodities"},"flx:GOLD":{"p":"TradFi","s":"Commodities"},"flx:OIL":{"p":"TradFi","s":"Commodities"},"flx:PALLADIUM":{"p":"TradFi","s":"Commodities"},"flx:PLATINUM":{"p":"TradFi","s":"Commodities"},"flx:SILVER":{"p":"TradFi","s":"Commodities"},"flx:USA500":{"p":"TradFi","s":"Indices"},"flx:USDE":{"p":"Crypto","s":"Altcoins"},"flx:XMR":{"p":"Crypto","s":"Altcoins"},"vntl:ANTHROPIC":{"p":"TradFi","s":"Pre-IPO"},"vntl:BIOTECH":{"p":"TradFi","s":"Indices"},"vntl:DEFENSE":{"p":"TradFi","s":"Indices"},"vntl:ENERGY":{"p":"TradFi","s":"Indices"},"vntl:INFOTECH":{"p":"TradFi","s":"Indices"},"vntl:MAG7":{"p":"TradFi","s":"Indices"},"vntl:NUCLEAR":{"p":"TradFi","s":"Indices"},"vntl:OPENAI":{"p":"TradFi","s":"Pre-IPO"},"vntl:ROBOT":{"p":"TradFi","s":"Indices"},"vntl:SEMIS":{"p":"TradFi","s":"Indices"},"vntl:SPACEX":{"p":"TradFi","s":"Pre-IPO"},"vntl:GOLDJM":{"p":"TradFi","s":"Commodities"},"vntl:SILVERJM":{"p":"TradFi","s":"Commodities"},"hyna:ADA":{"p":"Crypto","s":"Altcoins"},"hyna:BCH":{"p":"Crypto","s":"Altcoins"},"hyna:BNB":{"p":"Crypto","s":"Altcoins"},"hyna:BTC":{"p":"Crypto","s":"BTC"},"hyna:DOGE":{"p":"Crypto","s":"Altcoins"},"hyna:ENA":{"p":"Crypto","s":"Altcoins"},"hyna:ETH":{"p":"Crypto","s":"Altcoins"},"hyna:FARTCOIN":{"p":"Crypto","s":"Altcoins"},"hyna:HYPE":{"p":"Crypto","s":"Altcoins"},"hyna:IP":{"p":"Crypto","s":"Altcoins"},"hyna:LIGHTER":{"p":"Crypto","s":"Altcoins"},"hyna:LINK":{"p":"Crypto","s":"Altcoins"},"hyna:LIT":{"p":"Crypto","s":"Altcoins"},"hyna:LTC":{"p":"Crypto","s":"Altcoins"},"hyna:PUMP":{"p":"Crypto","s":"Altcoins"},"hyna:SOL":{"p":"Crypto","s":"Altcoins"},"hyna:SUI":{"p":"Crypto","s":"Altcoins"},"hyna:XMR":{"p":"Crypto","s":"Altcoins"},"hyna:XPL":{"p":"Crypto","s":"Altcoins"},"hyna:XRP":{"p":"Crypto","s":"Altcoins"},"hyna:ZEC":{"p":"Crypto","s":"Altcoins"},"hyna:GOLD":{"p":"TradFi","s":"Commodities"},"hyna:SILVER":{"p":"TradFi","s":"Commodities"},"km:AAPL":{"p":"TradFi","s":"Stocks"},"km:BABA":{"p":"TradFi","s":"Stocks"},"km:BMNR":{"p":"TradFi","s":"Stocks"},"km:GOOGL":{"p":"TradFi","s":"Stocks"},"km:MU":{"p":"TradFi","s":"Stocks"},"km:NVDA":{"p":"TradFi","s":"Stocks"},"km:PLTR":{"p":"TradFi","s":"Stocks"},"km:RTX":{"p":"TradFi","s":"Stocks"},"km:TSLA":{"p":"TradFi","s":"Stocks"},"km:GLDMINE":{"p":"TradFi","s":"Indices"},"km:SEMI":{"p":"TradFi","s":"Indices"},"km:SMALL2000":{"p":"TradFi","s":"Indices"},"km:US500":{"p":"TradFi","s":"Indices"},"km:USBOND":{"p":"TradFi","s":"Indices"},"km:USENERGY":{"p":"TradFi","s":"Indices"},"km:USTECH":{"p":"TradFi","s":"Indices"},"km:GOLD":{"p":"TradFi","s":"Commodities"},"km:SILVER":{"p":"TradFi","s":"Commodities"},"km:USOIL":{"p":"TradFi","s":"Commodities"},"cash:AMZN":{"p":"TradFi","s":"Stocks"},"cash:EWY":{"p":"TradFi","s":"Stocks"},"cash:GOOGL":{"p":"TradFi","s":"Stocks"},"cash:HOOD":{"p":"TradFi","s":"Stocks"},"cash:INTC":{"p":"TradFi","s":"Stocks"},"cash:META":{"p":"TradFi","s":"Stocks"},"cash:MSFT":{"p":"TradFi","s":"Stocks"},"cash:NVDA":{"p":"TradFi","s":"Stocks"},"cash:TSLA":{"p":"TradFi","s":"Stocks"},"cash:KWEB":{"p":"TradFi","s":"Indices"},"cash:USA500":{"p":"TradFi","s":"Indices"},"cash:GOLD":{"p":"TradFi","s":"Commodities"},"cash:SILVER":{"p":"TradFi","s":"Commodities"},"cash:WTI":{"p":"TradFi","s":"Commodities"},"CHIP":{"p":"Crypto","s":"Altcoins"},"xyz:ARM":{"p":"TradFi","s":"Stocks"},"xyz:ASML":{"p":"TradFi","s":"Stocks"},"xyz:BB":{"p":"TradFi","s":"Stocks"},"xyz:BIRD":{"p":"TradFi","s":"Stocks"},"xyz:BX":{"p":"TradFi","s":"Stocks"},"xyz:DKNG":{"p":"TradFi","s":"Stocks"},"xyz:EBAY":{"p":"TradFi","s":"Stocks"},"xyz:LITE":{"p":"TradFi","s":"Stocks"},"xyz:MRVL":{"p":"TradFi","s":"Stocks"},"xyz:RKLB":{"p":"TradFi","s":"Stocks"},"xyz:ZM":{"p":"TradFi","s":"Stocks"},"xyz:EWT":{"p":"TradFi","s":"Stocks"},"xyz:EWZ":{"p":"TradFi","s":"Stocks"},"xyz:CBRS":{"p":"TradFi","s":"Stocks"},"xyz:MINIMAX":{"p":"TradFi","s":"Stocks"},"xyz:PURRDAT":{"p":"TradFi","s":"Stocks"},"xyz:CORN":{"p":"TradFi","s":"Commodities"},"xyz:TTF":{"p":"TradFi","s":"Commodities"},"xyz:WHEAT":{"p":"TradFi","s":"Commodities"},"xyz:H100":{"p":"TradFi","s":"Indices"},"xyz:DRAM":{"p":"TradFi","s":"Indices"},"xyz:VOL":{"p":"TradFi","s":"Indices"},"xyz:IBOV":{"p":"TradFi","s":"Indices"},"xyz:NIFTY":{"p":"TradFi","s":"Indices"},"xyz:XLE":{"p":"TradFi","s":"Indices"},"xyz:GBP":{"p":"TradFi","s":"FX"},"xyz:KRW":{"p":"TradFi","s":"FX"},"xyz:QNT":{"p":"TradFi","s":"Pre-IPO"},"xyz:SPCX":{"p":"TradFi","s":"Pre-IPO"},"flx:GAS":{"p":"TradFi","s":"Commodities"},"flx:USA100":{"p":"TradFi","s":"Indices"},"vntl:SOY":{"p":"TradFi","s":"Commodities"},"vntl:WHEAT":{"p":"TradFi","s":"Commodities"},"hyna:BASED":{"p":"Crypto","s":"Altcoins"},"km:EUR":{"p":"TradFi","s":"FX"},"km:TENCENT":{"p":"TradFi","s":"Stocks"},"km:XIAOMI":{"p":"TradFi","s":"Stocks"},"cash:CAR":{"p":"TradFi","s":"Stocks"},"para:AVGO":{"p":"TradFi","s":"Stocks"},"para:BTCD":{"p":"Crypto","s":"Altcoins"},"para:H100":{"p":"TradFi","s":"Indices"},"para:OTHERS":{"p":"Crypto","s":"Altcoins"},"para:TOTAL2":{"p":"Crypto","s":"Altcoins"},"xyz:DELL":{"p":"TradFi","s":"Stocks"},"xyz:IBM":{"p":"TradFi","s":"Stocks"},"flx:BTC":{"p":"Crypto","s":"BTC"},"hyna:1000PEPE":{"p":"Crypto","s":"Altcoins"},"km:JPN225":{"p":"TradFi","s":"Indices"},"cash:BTC":{"p":"Crypto","s":"BTC"},"cash:ETH":{"p":"Crypto","s":"Altcoins"},"xyz:AVGO":{"p":"TradFi","s":"Stocks"},"xyz:NOW":{"p":"TradFi","s":"Stocks"}};
+// ── Classification rules (symbol-level; dex prefix stripped) ────────────────
+const S_ = s => new Set(s.split(/\s+/).filter(Boolean));
+const MEMES = S_(`DOGE kPEPE kSHIB kBONK kFLOKI kNEIRO WIF FARTCOIN TRUMP MELANIA PNUT POPCAT MOODENG BRETT MEME TURBO
+  BOME GOAT SPX PENGU PURR USELESS MEW CHILLGUY NEIROETH MYRO HPOS kDOGS 1000PEPE ANSEM`);
+// Crypto products listed on HIP-3 dexes (would otherwise default to Stocks)
+const HIP3_CRYPTO = S_(`OTHERS TOTAL2 BTCD BVIV DRV TREAD PRL LIGHTER BASED USDE XMR SOL XRP DOGE ADA LINK SUI ZEC`);
+const ETFS = S_(`SOXL SMH KORU TLT XBI MAGS EWY EWZ EWJ EWT URNM XLE MUU SNXX KSTR GDX IGV KWEB QQQ SPY IWM`);
+const INDICES = S_(`XYZ100 SP500 KR200 JP225 JPN225 NIFTY DRAM USA500 US500 USA100 USTECH SMALL2000 IBOV VIX VOL H100 DXY
+  MAG7 SEMIS SEMI BIOTECH DEFENSE ENERGY INFOTECH NUCLEAR ROBOT USENERGY GLDMINE`);
+const COMMODITIES = S_(`GOLD SILVER CL BRENTOIL WTI OIL USOIL COPPER NATGAS GAS PLATINUM PALLADIUM HO ALUMINIUM URANIUM
+  CORN WHEAT SOY TTF GOLDJM SILVERJM`);
+const FXR = S_(`EUR JPY GBP KRW CNH CHF AUD 2Y 5Y 10Y 30Y USBOND`);
+const PREIPO = S_(`SPCX SPACEX QNT ANT ANTH ANTHROPIC OAI OPENAI CXMT SHEIN OURA JIO UNITREE`);
+// Exact-name overrides win over every rule above, e.g. {'xyz:BOT':'ETFs'}
+const OVERRIDES = {};
 
-function grp(name,key){
-  const c=AC[name];if(!c)return false;
-  switch(key){
-    case 'BTC':return c.s==='BTC';
-    case 'Altcoins':return c.p==='Crypto'&&c.s!=='BTC';
-    case 'Crypto':return c.p==='Crypto';
-    case 'Stocks':return c.s==='Stocks';
-    case 'Indices':return c.s==='Indices';
-    case 'Commodities':return c.s==='Commodities';
-    case 'FX':return c.s==='FX';
-    case 'Pre-IPO':return c.s==='Pre-IPO';
-    case 'TradFi':return c.p==='TradFi';
-  }
-  return false;
+function classify(name){
+  if (OVERRIDES[name]) return OVERRIDES[name];
+  const i = name.indexOf(':');
+  const dex = i<0 ? '' : name.slice(0,i), sym = i<0 ? name : name.slice(i+1);
+  if (sym==='BTC') return 'BTC';
+  if (sym==='ETH') return 'ETH';
+  if (sym==='HYPE') return 'HYPE';
+  if (MEMES.has(sym)) return 'Memes';
+  if (!dex) return 'Altcoins';                 // every other native perp is crypto
+  if (HIP3_CRYPTO.has(sym)) return 'Altcoins';
+  if (PREIPO.has(sym)) return 'Pre-IPO';
+  if (ETFS.has(sym)) return 'ETFs';
+  if (INDICES.has(sym)) return 'Indices';
+  if (COMMODITIES.has(sym)) return 'Commodities';
+  if (FXR.has(sym)) return 'FX & Rates';
+  return 'Stocks';                              // unknown HIP-3 listing → Stocks
 }
 
-
-function aggrFromHist(byDay, tf) {
-  if(!byDay||byDay.length===0) return null;
-  const n = tf==='1D'?1:tf==='7D'?7:30;
-  const slice = byDay.slice(-n);
-  if(!slice.length) return null;
-  const totalVol = slice.reduce((a,d)=>a+d.totalVol,0);
-  const catVol={};
-  ALL_CATS.forEach(dc=>{ catVol[dc.key]=slice.reduce((a,d)=>a+((d.catVol||{})[dc.key]||0),0); });
-  return {totalVol,catVol,nDays:slice.length};
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
+// ═════════════════════════════════════════════════════════════════════════════
 // STATE
-// ─────────────────────────────────────────────────────────────────────────────
-const S={aggr:null,history:[],histByDay:null,tf:'1D',updatedAt:null,charts:{},modalChart:null};
+// ═════════════════════════════════════════════════════════════════════════════
+const S = {
+  markets:[], dexes:[], agg:null, updatedAt:null, error:null,
+  tf:'1D', hist:null, histProg:{done:0,total:0,coverage:0}, histErr:null,
+  countdown:REFRESH_SEC, charts:{},
+  mk:{q:'',cat:'All',dex:'All',sort:'vol',dir:-1,limit:60},
+};
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LOCAL DEV FALLBACK — direct API (used only on localhost)
-// ─────────────────────────────────────────────────────────────────────────────
-async function _localFetch(){
-  const API='https://api.hyperliquid.xyz/info';
-  function _parseDex(data){
-    const assets=[];
-    const meta=Array.isArray(data[0])?data[0]:(data[0]?.universe||[]);
-    const ctx=Array.isArray(data[1])?data[1]:[];
-    meta.forEach((a,i)=>{
-      const c=ctx[i]||{};
-      const px=parseFloat(c.markPx||c.oraclePx||c.prevDayPx||0);
-      assets.push({name:a.name,volume:parseFloat(c.dayNtlVlm||0),oi:parseFloat(c.openInterest||0)*px});
-    });
-    return assets;
+// ═════════════════════════════════════════════════════════════════════════════
+// UTIL
+// ═════════════════════════════════════════════════════════════════════════════
+const $ = id => document.getElementById(id);
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function $u(v){v=+v||0;const a=Math.abs(v);if(a>=1e12)return'$'+(v/1e12).toFixed(2)+'T';if(a>=1e9)return'$'+(v/1e9).toFixed(2)+'B';if(a>=1e6)return'$'+(v/1e6).toFixed(1)+'M';if(a>=1e3)return'$'+(v/1e3).toFixed(0)+'K';return'$'+v.toFixed(0)}
+const pct = (v,t,d=1) => t>0 ? (v/t*100).toFixed(d)+'%' : '0.0%';
+function $px(p){if(!p)return'—';if(p>=1000)return p.toLocaleString('en-US',{maximumFractionDigits:0});if(p>=1)return p.toFixed(2);if(p>=0.01)return p.toFixed(4);return p.toPrecision(3)}
+const sgn = v => (v>0?'+':'')+v.toFixed(2)+'%';
+const dexLabel = id => id ? (S.dexes.find(d=>d.id===id)?.name || id) : 'Hyperliquid';
+const sym = n => n.includes(':') ? n.split(':')[1] : n;
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),1800)}
+const utcDay = ts => new Date(ts).toISOString().slice(0,10);
+const fmtDay = iso => new Date(iso+'T00:00:00Z').toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'});
+const badge = m => `<span class="badge${m.dex?' hip3':''}">${m.dex?esc(m.dex):'native'}</span>`;
+
+// ═════════════════════════════════════════════════════════════════════════════
+// API
+// ═════════════════════════════════════════════════════════════════════════════
+let useCorsProxy = false;
+async function hl(body, tries=4){
+  const payload = JSON.stringify(body);
+  for (let a=0; a<tries; a++){
+    try{
+      const url = useCorsProxy ? 'https://corsproxy.io/?'+encodeURIComponent('https://api.hyperliquid.xyz/info') : HL_API;
+      const r = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:payload});
+      if (r.status===429 || r.status>=500){ await sleep(800*2**a + Math.random()*300); continue; }
+      if (!r.ok) throw new Error('HTTP '+r.status);
+      return await r.json();
+    }catch(e){
+      if (e instanceof TypeError && !useCorsProxy && !IS_LOCAL){ useCorsProxy = true; continue; }
+      if (a===tries-1) throw e;
+      await sleep(600*2**a);
+    }
   }
-  const rs=await Promise.allSettled([
-    fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'metaAndAssetCtxs'})}).then(r=>r.json()),
-    ...HIP3_DEXES.map(d=>fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'metaAndAssetCtxs',dex:d})}).then(r=>r.json()))
-  ]);
-  if(rs[0].status!=='fulfilled') throw new Error('native fetch failed');
-  const assets=_parseDex(rs[0].value);
-  HIP3_DEXES.forEach((_,i)=>{
-    const r=rs[i+1];
-    if(r.status==='fulfilled'&&Array.isArray(r.value)) assets.push(..._parseDex(r.value));
-  });
-  // Aggregate locally
-  let tV=0,tO=0;const cV={},cO={};
-  assets.forEach(a=>{
-    tV+=a.volume;tO+=a.oi;
-    if(!AC[a.name]){
-      if(a.name.includes(':')){const d=a.name.split(':')[0];if(d!=='hyna'){cV['TradFi']=(cV['TradFi']||0)+a.volume;cV['Stocks']=(cV['Stocks']||0)+a.volume;cO['TradFi']=(cO['TradFi']||0)+a.oi;cO['Stocks']=(cO['Stocks']||0)+a.oi;}}
+  throw new Error('Hyperliquid API rate-limited');
+}
+
+async function fetchLive(){
+  const dexList = await hl({type:'perpDexs'});
+  const dexes = [{id:'',name:'Hyperliquid',full:'Hyperliquid (native)'}]
+    .concat((dexList||[]).filter(Boolean).map(d=>({id:d.name,name:d.fullName||d.name,full:d.fullName||d.name})));
+  const rs = await Promise.allSettled(dexes.map(d=>hl(d.id?{type:'metaAndAssetCtxs',dex:d.id}:{type:'metaAndAssetCtxs'})));
+  if (rs[0].status!=='fulfilled') throw new Error('Could not load native markets: '+(rs[0].reason?.message||'unknown'));
+  const markets = [];
+  rs.forEach((r,i)=>{
+    if (r.status!=='fulfilled' || !Array.isArray(r.value)){
+      // keep the last good data for a dex whose request failed this round
+      markets.push(...S.markets.filter(m=>m.dex===dexes[i].id));
       return;
     }
-    ALL_CATS.forEach(dc=>{if(!grp(a.name,dc.key))return;cV[dc.key]=(cV[dc.key]||0)+a.volume;cO[dc.key]=(cO[dc.key]||0)+a.oi;});
-  });
-  return {updatedAt:Date.now(),live:{totalVol:tV,totalOI:tO,catVol:cV,catOI:cO},histByDay:null};
-}
-
-
-// ─────────────────────────────────────────────────────────────────────────────
-// FORMAT
-// ─────────────────────────────────────────────────────────────────────────────
-function $u(v){if(v>=1e9)return'$'+(v/1e9).toFixed(1)+'B';if(v>=1e6)return'$'+(v/1e6).toFixed(1)+'M';if(v>=1e3)return'$'+(v/1e3).toFixed(0)+'K';return'$'+v.toFixed(0)}
-function $p(v,t){return t>0?((v/t)*100).toFixed(1)+'%':'0.0%'}
-function ago(ts){if(!ts)return'—';const m=Math.floor((Date.now()-ts)/60000);if(m<1)return'just now';if(m<60)return m+'m ago';return Math.floor(m/60)+'h ago';}
-function nextHour(){const d=new Date();d.setHours(d.getHours()+1,0,0,0);return d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false});}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// HISTORY
-// ─────────────────────────────────────────────────────────────────────────────
-const HKEY='hl_dash_v6';
-function loadH(){try{return JSON.parse(localStorage.getItem(HKEY)||'[]')}catch{return[]}}
-function saveH(a){
-  const h=loadH();
-  h.push({ts:Date.now(),totalVol:a.totalVol,totalOI:a.totalOI,catVol:{...a.catVol},catOI:{...a.catOI}});
-  while(h.length>720)h.shift();
-  try{localStorage.setItem(HKEY,JSON.stringify(h))}catch{}
-  return h;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MODAL
-// ─────────────────────────────────────────────────────────────────────────────
-let pendingModalData=null;
-
-function openModal(title,subtitle,cats,data,groupTotal,total){
-  pendingModalData={title,subtitle,cats,data,groupTotal,total};
-  document.getElementById('modal-title').textContent=title;
-  document.getElementById('modal-subtitle').textContent=subtitle;
-  document.getElementById('modal-center-val').textContent=$u(groupTotal);
-  document.getElementById('modal-center-lbl').textContent='of '+$u(total)+' total';
-  document.getElementById('modal').style.display='block';
-  document.body.style.overflow='hidden';
-
-  const vals=cats.map(d=>data[d.key]||0);
-  const colors=cats.map(d=>d.color);
-  const labels=cats.map(d=>d.label);
-
-  if(S.modalChart) S.modalChart.destroy();
-  const ctx=document.getElementById('modal-canvas').getContext('2d');
-  S.modalChart=new Chart(ctx,{
-    type:'doughnut',
-    data:{labels,datasets:[{data:vals,backgroundColor:colors,borderColor:'#0d1e19',borderWidth:3,hoverOffset:6}]},
-    options:{
-      cutout:'62%',
-      animation:{duration:400},
-      plugins:{
-        legend:{display:false},
-        tooltip:{backgroundColor:'#0d1e19',borderColor:'rgba(79,210,194,.3)',borderWidth:1,titleColor:'#4fd2c2',bodyColor:'#f0faf8',
-          callbacks:{label:c=>` ${$u(c.raw)}  (${$p(c.raw,total)} of market)`}}
-      }
-    }
-  });
-
-  document.getElementById('modal-legend').innerHTML=labels.map((l,i)=>`
-    <div class="modal-legend-item">
-      <div class="modal-legend-dot" style="background:${colors[i]}"></div>
-      <span class="modal-legend-lbl">${l}</span>
-      <span class="modal-legend-val">${$p(vals[i],total)}</span>
-    </div>`).join('');
-}
-
-function closeModal(e){
-  if(e&&e.target!==document.getElementById('modal')&&e.type==='click') return;
-  document.getElementById('modal').style.display='none';
-  document.body.style.overflow='';
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// RENDER
-// ─────────────────────────────────────────────────────────────────────────────
-function renderAll(fullAggr, hist){
-  // Volume source by timeframe:
-  //   1D  → live dayNtlVlm (rolling 24h, complete universe coverage)
-  //   7D  → sum of last 7 daily candles from history
-  //   30D → sum of last 30 daily candles from history
-  // Historical is skipped for 1D because:
-  //   (a) today's candle is partial (UTC day in progress) → undercounts
-  //   (b) live dayNtlVlm IS the rolling 24h, computed by HL across all assets
-  // OI always comes from the live snapshot — candleSnapshot has no OI.
-  const histVol  = (S.tf !== '1D') ? aggrFromHist(S.histByDay, S.tf) : null;
-  const liveAggr = fullAggr;
-
-  const volData  = histVol || liveAggr;
-  const totalVol = volData.totalVol;
-  const catVol   = volData.catVol;
-  const totalOI  = liveAggr.totalOI;
-  const catOI    = liveAggr.catOI;
-  const aggr     = {totalVol, totalOI, catVol, catOI};
-
-  document.getElementById('header-meta').innerHTML=
-    `<span class="live-dot"></span><span class="hl">LIVE</span> &nbsp;·&nbsp; Updated <span id="ago-txt">${ago(S.updatedAt)}</span>
-     <br/>Next refresh <span class="hl">~${nextHour()}</span>`;
-
-  const tfLabel={'1D':'24 Hours','7D':'7 Days','30D':'30 Days'}[S.tf];
-
-  document.getElementById('main').innerHTML=`
-    <!-- VIBE GAUGE HERO -->
-    <div class="vibe-hero">
-      <div class="vibe-title">⬡ &nbsp;Hyperliquid Vibe Check &nbsp;·&nbsp; ${tfLabel} Trading Volume</div>
-      <div class="vibe-gauge-wrap" id="vibe-gauge-wrap">
-        <div class="vibe-gauge-labels">
-          <div class="vibe-label tradfi">
-            TradFi
-            <span class="pct" id="gauge-tradfi-pct">—</span>
-            <span class="abs" id="gauge-tradfi-abs"></span>
-          </div>
-          <div class="vibe-label crypto" style="text-align:right">
-            Crypto
-            <span class="pct" id="gauge-crypto-pct">—</span>
-            <span class="abs" id="gauge-crypto-abs"></span>
-          </div>
-        </div>
-        <div class="vibe-canvas-wrap">
-          <canvas id="vibe-gauge" style="width:100%;max-width:500px;display:block;margin:0 auto"></canvas>
-          <div class="vibe-needle-label">
-            <div class="vibe-needle-val" id="gauge-needle-val"></div>
-            <div class="vibe-needle-sub" id="gauge-needle-sub"></div>
-          </div>
-        </div>
-        <div class="vibe-tagline" id="gauge-tagline"></div>
-      </div>
-      <div class="vibe-tf-note" id="gauge-tf-note"></div>
-    </div>
-
-    <div class="controls-bar">
-      <div class="controls-left">Timeframe: <span style="color:var(--teal);font-weight:700">${tfLabel}</span> &nbsp;·&nbsp; Vol = sum of ${S.tf==='1D'?'1 day':S.tf==='7D'?'7 days':'30 days'} candles &nbsp;·&nbsp; OI = live snapshot${S.histByDay?' &nbsp;·&nbsp; <span style="color:var(--teal2)">history loaded</span>':' &nbsp;·&nbsp; <span style="color:var(--muted)">loading history...</span>'}</div>
-      <div class="tf-row">
-        ${['1D','7D','30D'].map(t=>`<button class="tf-btn${S.tf===t?' active':''}" onclick="setTf('${t}')">${t}</button>`).join('')}
-      </div>
-    </div>
-
-    <!-- VOLUME -->
-    <div class="section-header"><div class="section-title">Trading Volume</div><div class="section-subtitle">24h rolling</div><div class="section-line"></div></div>
-    <div class="sub-divider"><div class="sub-tag">CRYPTO</div></div>
-    <div class="metric-row">
-      <div class="kpi-grid crypto-grid" id="vol-crypto"></div>
-      <div class="pie-card" role="button" tabindex="0" aria-label="Expand Crypto volume breakdown" onclick="openPie('vol','crypto')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPie('vol','crypto')}">
-        <div class="pie-card-title">Volume Share — Crypto <span>click to expand ↗</span></div>
-        <div class="pie-wrap"><canvas id="pie-vol-crypto" height="160" role="img" aria-label="Donut chart: Crypto volume breakdown by BTC and Altcoins"></canvas>
-          <div class="pie-center"><div class="pie-center-val" id="pvc-tot"></div><div class="pie-center-lbl">Crypto Vol</div></div>
-        </div>
-        <div class="pie-legend" id="pie-vol-crypto-legend"></div>
-      </div>
-    </div>
-    <div class="sub-divider" style="margin-top:12px"><div class="sub-tag" style="background:#e8833a">TRADFI</div></div>
-    <div class="metric-row">
-      <div class="tradfi-scroll"><div class="kpi-grid tradfi-grid" id="vol-tradfi"></div></div>
-      <div class="pie-card" role="button" tabindex="0" aria-label="Expand TradFi volume breakdown" onclick="openPie('vol','tradfi')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPie('vol','tradfi')}">
-        <div class="pie-card-title">Volume Share — TradFi <span>click to expand ↗</span></div>
-        <div class="pie-wrap"><canvas id="pie-vol-tradfi" height="160" role="img" aria-label="Donut chart: TradFi volume breakdown by Stocks, Indices, Commodities, FX, Pre-IPO"></canvas>
-          <div class="pie-center"><div class="pie-center-val" id="pvt-tot"></div><div class="pie-center-lbl">TradFi Vol</div></div>
-        </div>
-        <div class="pie-legend" id="pie-vol-tradfi-legend"></div>
-      </div>
-    </div>
-
-    <!-- OI -->
-    <div class="section-header"><div class="section-title">Open Interest</div><div class="section-subtitle">Live Snapshot</div><div class="section-line"></div></div>
-    <div class="sub-divider"><div class="sub-tag">CRYPTO</div></div>
-    <div class="metric-row">
-      <div class="kpi-grid crypto-grid" id="oi-crypto"></div>
-      <div class="pie-card" role="button" tabindex="0" aria-label="Expand Crypto open interest breakdown" onclick="openPie('oi','crypto')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPie('oi','crypto')}">
-        <div class="pie-card-title">OI Share — Crypto <span>click to expand ↗</span></div>
-        <div class="pie-wrap"><canvas id="pie-oi-crypto" height="160" role="img" aria-label="Donut chart: Crypto open interest breakdown by BTC and Altcoins"></canvas>
-          <div class="pie-center"><div class="pie-center-val" id="poc-tot"></div><div class="pie-center-lbl">Crypto OI</div></div>
-        </div>
-        <div class="pie-legend" id="pie-oi-crypto-legend"></div>
-      </div>
-    </div>
-    <div class="sub-divider" style="margin-top:12px"><div class="sub-tag" style="background:#e8833a">TRADFI</div></div>
-    <div class="metric-row">
-      <div class="tradfi-scroll"><div class="kpi-grid tradfi-grid" id="oi-tradfi"></div></div>
-      <div class="pie-card" role="button" tabindex="0" aria-label="Expand TradFi open interest breakdown" onclick="openPie('oi','tradfi')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPie('oi','tradfi')}">
-        <div class="pie-card-title">OI Share — TradFi <span>click to expand ↗</span></div>
-        <div class="pie-wrap"><canvas id="pie-oi-tradfi" height="160" role="img" aria-label="Donut chart: TradFi open interest breakdown by Stocks, Indices, Commodities, FX, Pre-IPO"></canvas>
-          <div class="pie-center"><div class="pie-center-val" id="pot-tot"></div><div class="pie-center-lbl">TradFi OI</div></div>
-        </div>
-        <div class="pie-legend" id="pie-oi-tradfi-legend"></div>
-      </div>
-    </div>
-
-    <!-- HISTORY -->
-    <div class="section-header"><div class="section-title">7-Day History</div><div class="section-subtitle">Daily candles</div><div class="section-line"></div></div>
-    ${hist.length<2?`<div class="hist-notice">⏳ Building history — accumulates hourly. ${hist.length} snapshot${hist.length!==1?'s':''} collected. Showing current data until history builds up.</div>`:''}
-    <div class="hist-grid">
-      <div class="chart-card"><div class="chart-title">Volume % by Category — Last 7 Days</div><canvas id="vol-hist" height="200"></canvas></div>
-      <div class="chart-card"><div class="chart-title">Open Interest % by Category — Last 7 Days</div><canvas id="oi-hist" height="200"></canvas></div>
-    </div>
-  `;
-
-  // Store current data for modal access
-  window._dashData={totalVol,totalOI,catVol,catOI};
-  // Draw hero gauge
-  const cryptoVolPct = totalVol > 0 ? (catVol['Crypto']||0) / totalVol * 100 : 50;
-  const tradfiVolPct = totalVol > 0 ? (catVol['TradFi']||0) / totalVol * 100 : 50;
-  window._gaugeArgs = [cryptoVolPct, tradfiVolPct, totalVol, catVol];
-  // Use requestAnimationFrame so canvas has rendered dimensions
-  drawGauge(cryptoVolPct, tradfiVolPct, totalVol, catVol);
-
-  renderKPIs('vol-crypto',CRYPTO_CATS,catVol,totalVol,'VOL');
-  renderKPIs('vol-tradfi',TRADFI_CATS,catVol,totalVol,'VOL');
-  renderKPIs('oi-crypto', CRYPTO_CATS,catOI, totalOI, 'OI');
-  renderKPIs('oi-tradfi', TRADFI_CATS,catOI, totalOI, 'OI');
-
-  const cVT=catVol['Crypto']||0, tVT=catVol['TradFi']||0;
-  const cOT=catOI['Crypto'] ||0, tOT=catOI['TradFi'] ||0;
-  renderPie('pie-vol-crypto','pvc-tot','pie-vol-crypto-legend',PIE_CRYPTO,catVol,cVT,totalVol);
-  renderPie('pie-vol-tradfi','pvt-tot','pie-vol-tradfi-legend',PIE_TRADFI,catVol,tVT,totalVol);
-  renderPie('pie-oi-crypto', 'poc-tot','pie-oi-crypto-legend', PIE_CRYPTO,catOI, cOT,totalOI);
-  renderPie('pie-oi-tradfi', 'pot-tot','pie-oi-tradfi-legend', PIE_TRADFI,catOI, tOT,totalOI);
-
-  renderHist(hist, fullAggr);
-}
-
-function openPie(metric,sector){
-  const d=window._dashData; if(!d) return;
-  const isVol=metric==='vol';
-  const isCrypto=sector==='crypto';
-  const cats=isCrypto?PIE_CRYPTO:PIE_TRADFI;
-  const data=isVol?d.catVol:d.catOI;
-  const total=isVol?d.totalVol:d.totalOI;
-  const groupKey=isCrypto?'Crypto':'TradFi';
-  const groupTotal=data[groupKey]||0;
-  const title=`${isVol?'Volume':'Open Interest'} Share — ${isCrypto?'Crypto':'TradFi'}`;
-  const subtitle=`${S.tf} timeframe · % of total ${isVol?'trading volume':'open interest'}`;
-  openModal(title,subtitle,cats,data,groupTotal,total);
-}
-
-function renderKPIs(id,cats,data,total,ml){
-  const parents  = cats.filter(dc=>dc.isParent);
-  const children = cats.filter(dc=>!dc.isParent);
-  const ordered  = [...parents, ...children];
-  document.getElementById(id).innerHTML=ordered.map(dc=>{
-    const v=data[dc.key]||0;
-    const glow=dc.color.replace('#','');
-    const r=parseInt(glow.substr(0,2),16),g=parseInt(glow.substr(2,2),16),b=parseInt(glow.substr(4,2),16);
-    const fullRow = dc.isParent ? ' style="grid-column:1/-1"' : '';
-    return`<div class="kpi-card${dc.isParent?' parent':''}"${fullRow} style="--accent:${dc.color};--accent-glow:rgba(${r},${g},${b},0.07)">
-      <div class="kpi-cat">${dc.label}</div>
-      <div class="kpi-metric-label">${ml}</div>
-      <div class="kpi-pct">${$p(v,total)}</div>
-      <div class="kpi-abs">${$u(v)}</div>
-    </div>`;
-  }).join('');
-}
-
-function renderPie(cid,centerId,legendId,cats,data,groupTotal,total){
-  const vals=cats.map(d=>data[d.key]||0);
-  const colors=cats.map(d=>d.color);
-  const labels=cats.map(d=>d.label);
-  document.getElementById(centerId).textContent=$u(groupTotal);
-  const ctx=document.getElementById(cid).getContext('2d');
-  if(S.charts[cid]) S.charts[cid].destroy();
-  S.charts[cid]=new Chart(ctx,{
-    type:'doughnut',
-    data:{labels,datasets:[{data:vals,backgroundColor:colors,borderColor:'#01241d',borderWidth:2,hoverOffset:4}]},
-    options:{cutout:'65%',plugins:{legend:{display:false},
-      tooltip:{backgroundColor:'#01241d',borderColor:'rgba(79,210,194,.2)',borderWidth:1,titleColor:'#4fd2c2',bodyColor:'#f8fcfd',
-        callbacks:{label:c=>` ${$u(c.raw)}  (${$p(c.raw,total)} of total)`}}}}
-  });
-  document.getElementById(legendId).innerHTML=labels.map((l,i)=>`
-    <div class="pie-legend-item">
-      <div class="pie-legend-dot" style="background:${colors[i]}"></div>
-      <span class="pie-legend-lbl">${l}</span>
-      <span class="pie-legend-val">${$p(vals[i],total)}</span>
-    </div>`).join('');
-}
-
-function renderHist(hist, fallbackAggr){
-  const byDay = S.histByDay; // null = still fetching, array = done (may be empty)
-
-  // Still fetching — show spinner inside each chart card
-  if (byDay === null) {
-    ['vol-hist','oi-hist'].forEach(id=>{
-      const el=document.getElementById(id); if(!el) return;
-      if(S.charts[id]){S.charts[id].destroy();delete S.charts[id];}
-      el.style.display='none';
-      const card=el.closest('.chart-card');
-      if(card && !card.querySelector('.hist-loading')) card.insertAdjacentHTML('beforeend',`
-        <div class="hist-loading" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;gap:12px">
-          <div style="width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin .8s linear infinite"></div>
-          <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted)">Fetching 30-day candles…</div>
-        </div>`);
-    });
-    if(!document.getElementById('spin-style')){
-      const s=document.createElement('style');s.id='spin-style';
-      s.textContent='@keyframes spin{to{transform:rotate(360deg)}}';
-      document.head.appendChild(s);
-    }
-    return;
-  }
-
-  // Done fetching — clear spinners, restore canvas visibility
-  ['vol-hist','oi-hist'].forEach(id=>{
-    const el=document.getElementById(id); if(!el) return;
-    el.style.display='';
-    el.closest('.chart-card')?.querySelector('.hist-loading')?.remove();
-    el.closest('.chart-card')?.querySelector('.hist-empty')?.remove();
-  });
-
-  // Use candleSnapshot history if available, else fall back to localStorage snapshots
-  // Use candleSnapshot byDay for volume bars (real daily data)
-  // Use localStorage hist snapshots for OI bars
-  const oiByDay={};
-  hist.forEach(h=>{
-    const day=new Date(h.ts).toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    oiByDay[day]=h;
-  });
-
-  // Build unified day list from candle history
-  const candleDays = byDay ? byDay.slice(-7) : [];
-  const oiDays     = Object.entries(oiByDay).slice(-7);
-
-  // Use candle days for labels if available, else OI days, else today
-  let labels, volData, oiData;
-  if (candleDays.length > 0) {
-    labels  = candleDays.map(d=>d.day);
-    volData = candleDays;
-  } else if (oiDays.length > 0) {
-    labels  = oiDays.map(([day])=>day);
-    volData = null;
-  } else {
-    const today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    labels=[today];
-    volData=[{day:today,...(fallbackAggr||{}),totalVol:fallbackAggr?.totalVol||0,catVol:fallbackAggr?.catVol||{}}];
-  }
-
-  // OI data: align to same labels from localStorage snapshots
-  // If no OI history, use live snapshot for all days
-  function mkOIDay(label) {
-    const h = oiByDay[label];
-    if (h) return h;
-    return fallbackAggr ? {totalOI:fallbackAggr.totalOI,catOI:fallbackAggr.catOI} : {totalOI:0,catOI:{}};
-  }
-
-  function mkDs(field){
-    return BAR_CATS.map(dc=>({
-      label:dc.label,
-      data:labels.map((label,i)=>{
-        if(field==='vol'){
-          const d=volData?volData[i]:null;
-          const tot=d?d.totalVol:0;
-          const val=d?(d.catVol||{})[dc.key]||0:0;
-          return tot>0?parseFloat(((val/tot)*100).toFixed(2)):0;
-        } else {
-          const d=mkOIDay(label);
-          const tot=d.totalOI||0;
-          const val=(d.catOI||{})[dc.key]||0;
-          return tot>0?parseFloat(((val/tot)*100).toFixed(2)):0;
-        }
-      }),
-      backgroundColor:dc.color,
-      stack:'s'
-    }));
-  }
-
-  // Guard: don't render a broken single-bar chart — show a helpful empty state instead
-  if (labels.length < 2) {
-    ['vol-hist','oi-hist'].forEach(id=>{
-      const el=document.getElementById(id); if(!el) return;
-      if(S.charts[id]){S.charts[id].destroy();delete S.charts[id];}
-      el.style.display='none';
-      const card=el.closest('.chart-card'); if(!card) return;
-      if(!card.querySelector('.hist-empty')) card.insertAdjacentHTML('beforeend',`
-        <div class="hist-empty">
-          <div class="hist-empty-icon">📊</div>
-          <div class="hist-empty-msg">Building history…<br/>Check back after the first full UTC day of data.</div>
-        </div>`);
-    });
-    return;
-  }
-
-  // Restore canvas visibility in case we previously hid it
-  ['vol-hist','oi-hist'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.style.display='';
-    const card=el?.closest('.chart-card');
-    card?.querySelector('.hist-empty')?.remove();
-  });
-
-  ['vol-hist','oi-hist'].forEach((id,i)=>{
-    const el=document.getElementById(id); if(!el) return;
-    if(S.charts[id]) S.charts[id].destroy();
-    S.charts[id]=new Chart(el.getContext('2d'),{
-      type:'bar',
-      data:{labels,datasets:mkDs(i===0?'vol':'oi')},
-      options:{
-        responsive:true,maintainAspectRatio:true,
-        plugins:{
-          legend:{display:true,position:'bottom',labels:{color:'#9ab8b4',font:{family:'Space Mono',size:10},boxWidth:10,boxHeight:10,padding:10}},
-          tooltip:{backgroundColor:'#01241d',borderColor:'rgba(79,210,194,.2)',borderWidth:1,titleColor:'#4fd2c2',bodyColor:'#f8fcfd',
-            callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}
-        },
-        scales:{
-          x:{stacked:true,grid:{color:'rgba(79,210,194,.03)'},ticks:{color:'#9ab8b4',font:{family:'Space Mono',size:10},maxRotation:45}},
-          y:{stacked:true,min:0,max:100,grid:{color:'rgba(79,210,194,.05)'},ticks:{color:'#9ab8b4',font:{family:'Space Mono',size:10},callback:v=>v+'%'}}
-        }
-      }
+    const uni = r.value[0]?.universe || [], ctx = r.value[1] || [];
+    uni.forEach((a,j)=>{
+      if (a.isDelisted) return;
+      const c = ctx[j] || {};
+      const px = parseFloat(c.markPx||c.oraclePx||0), prev = parseFloat(c.prevDayPx||0);
+      const cat = classify(a.name);
+      markets.push({
+        name:a.name, dex:dexes[i].id, sym:sym(a.name), cat, group:CAT[cat].group,
+        px, chg: prev>0 ? (px/prev-1)*100 : 0,
+        vol: parseFloat(c.dayNtlVlm||0), oi: parseFloat(c.openInterest||0)*px,
+        fund: parseFloat(c.funding||0)*24*365*100, lev:a.maxLeverage||0,
+      });
     });
   });
+  const live = new Set(markets.map(m=>m.dex));
+  return {markets, dexes:dexes.filter(d=>live.has(d.id))};
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN
-// ─────────────────────────────────────────────────────────────────────────────
-function setTf(tf){S.tf=tf;if(S.aggr) renderAll(S.aggr,S.history);}
-
-function showLoading(){
-  document.getElementById('main').innerHTML=`
-    <div class="sk-card gauge"></div>
-    <div class="sk-card controls"></div>
-
-    <div class="skeleton-section">
-      <div class="skeleton-label"></div>
-      <div class="skeleton-row two">
-        <div>
-          <div class="skeleton-row crypto-kpi">
-            <div class="sk-card parent"></div>
-          </div>
-          <div class="skeleton-row" style="grid-template-columns:1fr 1fr">
-            <div class="sk-card"></div><div class="sk-card"></div>
-          </div>
-        </div>
-        <div class="sk-card pie"></div>
-      </div>
-    </div>
-
-    <div class="skeleton-section">
-      <div class="skeleton-label"></div>
-      <div class="skeleton-row two">
-        <div>
-          <div class="sk-card parent" style="margin-bottom:10px"></div>
-          <div class="skeleton-row tradfi-kpi">
-            <div class="sk-card"></div><div class="sk-card"></div>
-            <div class="sk-card"></div><div class="sk-card"></div>
-            <div class="sk-card"></div>
-          </div>
-        </div>
-        <div class="sk-card pie"></div>
-      </div>
-    </div>`;
-}
-function showError(msg){
-  document.getElementById('main').innerHTML=`<div class="error-box">⚠ ${msg}</div>`;
+function aggregate(markets){
+  const A = {vol:0, oi:0, n:markets.length, cat:{}, grp:{}, dex:{}};
+  CATS.forEach(c=>A.cat[c.key]={vol:0,oi:0,n:0,top:[]});
+  Object.keys(GROUPS).forEach(g=>A.grp[g]={vol:0,oi:0,n:0});
+  markets.forEach(m=>{
+    A.vol+=m.vol; A.oi+=m.oi;
+    const c=A.cat[m.cat]; c.vol+=m.vol; c.oi+=m.oi; c.n++; c.top.push(m);
+    const g=A.grp[m.group]; g.vol+=m.vol; g.oi+=m.oi; g.n++;
+    const d=A.dex[m.dex] ||= {vol:0,oi:0,n:0,tfVol:0,tfOi:0,top:null};
+    d.vol+=m.vol; d.oi+=m.oi; d.n++;
+    if (m.group==='TradFi'){ d.tfVol+=m.vol; d.tfOi+=m.oi; }
+    if (!d.top || m.vol>d.top.vol) d.top=m;
+  });
+  Object.values(A.cat).forEach(c=>c.top.sort((a,b)=>b.vol-a.vol));
+  return A;
 }
 
-// ── "Updated X min ago" ticker — updates every minute without a full re-render
-setInterval(()=>{
-  const el=document.getElementById('ago-txt');
-  if(el&&S.updatedAt) el.textContent=ago(S.updatedAt);
-},60000);
+// ═════════════════════════════════════════════════════════════════════════════
+// HISTORY — daily candles (volume only; OI has no history in the public API)
+// Cached per coin in localStorage until the next UTC midnight.
+// ═════════════════════════════════════════════════════════════════════════════
+const HC_KEY = 'hlvc_candles_v2';
+function loadHC(){ try{ return JSON.parse(localStorage.getItem(HC_KEY)||'{}') }catch{ return {} } }
+function saveHC(c){ try{ localStorage.setItem(HC_KEY, JSON.stringify(c)) }catch{} }
 
-async function fetchData(){
-  const isLocal=location.hostname==='localhost'||location.hostname==='127.0.0.1';
-  if(!S.aggr) showLoading();
+let histRunning = false;
+async function fetchHistory(){
+  if (histRunning) return; histRunning = true;
   try{
-    let payload;
-    if(isLocal){
-      // Local dev: hit Hyperliquid directly (no Netlify Functions available)
-      payload = await _localFetch();
-    } else {
-      // Production: fetch pre-built snapshot from Netlify Blobs via /api/data
-      // Falls back to direct API if Blobs not yet populated (first deploy, 503)
-      const r=await fetch('/api/data');
-      if(r.status===503){
-        console.warn('/api/data not ready yet — falling back to direct API');
-        payload = await _localFetch();
-      } else {
-        if(!r.ok) throw new Error(`/api/data returned ${r.status}`);
-        payload=await r.json();
-        if(payload.error) throw new Error(payload.error);
+    const today = utcDay(Date.now());
+    const midnight = Date.parse(today+'T00:00:00Z');
+    const cache = loadHC();
+    // Seed from the server-side cache (netlify/functions/refresh.mjs) so most
+    // visitors never hit Hyperliquid for candles. Falls back silently.
+    if (!IS_LOCAL || location.search.includes('server')){
+      try{
+        const r = await fetch('/api/data');
+        const snap = r.ok ? await r.json() : null;
+        if (snap && snap.v===2 && snap.candles){
+          let used = 0;
+          for (const [coin,e] of Object.entries(snap.candles)){
+            if (!cache[coin] || cache[coin].ts < e.ts){ cache[coin] = e; used++; }
+          }
+          console.log(`history: ${used} markets from server cache`);
+        }
+      }catch(e){ /* no backend (local dev) — fetch candles directly */ }
+    }
+    // Cover markets carrying ≥99.7% of 24h volume (the long tail barely moves shares
+    // and every candle request costs API weight).
+    const sorted = [...S.markets].filter(m=>m.vol>0).sort((a,b)=>b.vol-a.vol);
+    const coins = []; let cum = 0;
+    for (const m of sorted){ coins.push(m.name); cum+=m.vol; if (cum/S.agg.vol>=0.997 && coins.length>=60) break; }
+    S.histProg = {done:0,total:coins.length,coverage:cum/S.agg.vol};
+    const todo = coins.filter(c=>!(cache[c] && cache[c].ts>=midnight));
+    S.histProg.done = coins.length - todo.length;
+    if (!todo.length) buildHist(cache, coins);
+    renderHistory();
+    const start = Date.now() - 32*864e5;
+    let i = 0, lastPaint = 0;
+    const worker = async()=>{
+      while (i < todo.length){
+        const coin = todo[i++];
+        try{
+          const d = await hl({type:'candleSnapshot',req:{coin,interval:'1d',startTime:start,endTime:Date.now()}},5);
+          if (Array.isArray(d)) cache[coin] = {ts:Date.now(), c:d.map(k=>[utcDay(k.t), parseFloat(k.v||0)*parseFloat(k.c||0)])};
+        }catch(e){ /* skip coin */ }
+        S.histProg.done++;
+        if (Date.now()-lastPaint>1500){ lastPaint=Date.now(); saveHC(cache); buildHist(cache,coins); renderHistory(); }
       }
-    }
-    S.aggr      = payload.live;
-    S.histByDay = payload.histByDay; // null on localhost until server runs
-    S.updatedAt = payload.updatedAt;
-    S.history   = saveH(S.aggr);
-    renderAll(S.aggr, S.history);
-
-    // Kick off candle fetch if histByDay not yet populated (localhost always,
-    // or production when falling back to direct API during first deploy)
-    if(!S.histByDay){
-      _localFetchCandles().then(byDay=>{
-        S.histByDay=byDay;
-        renderAll(S.aggr,S.history);
-      }).catch(e=>console.warn('Candle fetch failed:',e.message));
-    }
-  }catch(e){
-    console.error(e);
-    showError(e.message);
-  }
+    };
+    await Promise.all([worker(),worker(),worker()]);
+    saveHC(cache);
+    buildHist(cache, coins);
+    S.histErr = null;
+  }catch(e){ S.histErr = e.message; console.warn('history',e); }
+  histRunning = false;
+  renderHistory(); renderTfDependent();
 }
 
-// Poll every 5 min to pick up server's hourly refresh without a page reload
-setInterval(fetchData, 5*60*1000);
+function buildHist(cache, coins){
+  const today = utcDay(Date.now());
+  const days = new Map();
+  coins.forEach(coin=>{
+    const e = cache[coin]; if (!e) return;
+    const cat = classify(coin);
+    e.c.forEach(([day,vol])=>{
+      if (day>=today) return;                 // skip today's partial candle
+      const d = days.get(day) || {day,total:0,cat:{}};
+      d.total += vol; d.cat[cat] = (d.cat[cat]||0)+vol;
+      days.set(day,d);
+    });
+  });
+  S.hist = [...days.values()].sort((a,b)=>a.day<b.day?-1:1).slice(-30);
+}
 
-if(location.protocol==='file:'){
-  document.getElementById('banner').innerHTML=`
-    <div class="setup-banner">
-      <span class="dismiss" onclick="this.parentElement.remove()">✕</span>
-      <strong>⚡ Serve this file for live data</strong>
-      Run <code>python3 -m http.server 8080</code> in this folder, then open <code>http://localhost:8080</code>
+function tfVol(){
+  if (S.tf==='1D' || !S.hist || !S.hist.length){
+    const cat = Object.fromEntries(CATS.map(c=>[c.key,S.agg.cat[c.key].vol]));
+    return {total:S.agg.vol, cat, days:1, live:true};
+  }
+  const n = S.tf==='7D'?7:30, sl = S.hist.slice(-n);
+  const cat = Object.fromEntries(CATS.map(c=>[c.key, sl.reduce((a,d)=>a+(d.cat[c.key]||0),0)]));
+  return {total:sl.reduce((a,d)=>a+d.total,0), cat, days:sl.length, live:false};
+}
+const grpSum = (cat,g) => CATS.filter(c=>c.group===g).reduce((a,c)=>a+(cat[c.key]||0),0);
+const tfShare = d => d.total ? grpSum(d.cat,'TradFi')/d.total*100 : 0;
+
+// ═════════════════════════════════════════════════════════════════════════════
+// SMALL COMPONENTS
+// ═════════════════════════════════════════════════════════════════════════════
+const TF_LABEL = {'1D':'24h','7D':'7 days','30D':'30 days'};
+
+function sparkline(vals, color){
+  if (!vals || vals.length<2) return '';
+  const w=300, h=42, min=Math.min(...vals), max=Math.max(...vals), rng=(max-min)||1;
+  const pts = vals.map((v,i)=>[i/(vals.length-1)*w, h-4-(v-min)/rng*(h-10)]);
+  const line = pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  const id = 'sg'+Math.random().toString(36).slice(2,8);
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">
+    <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity=".22"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
+    <path d="${line} L${w} ${h} L0 ${h} Z" fill="url(#${id})"/><path d="${line}" fill="none" stroke="${color}" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>`;
+}
+function deltaPill(diff, unit='%', digits=1){
+  if (!isFinite(diff)) return '';
+  return `<span class="delta ${diff>=0?'up':'down'}">${diff>=0?'+':''}${diff.toFixed(digits)}${unit}</span>`;
+}
+const tip = cb => ({backgroundColor:'#0d2322',borderColor:'#1f3a39',borderWidth:1,titleColor:'#e8f2f0',bodyColor:'#a5b5b3',titleFont:{family:'Instrument Sans',weight:'600',size:12},bodyFont:{family:'JetBrains Mono',size:11},padding:10,boxPadding:4,usePointStyle:true,callbacks:cb});
+const tick = {color:'#6c8784',font:{family:'JetBrains Mono',size:10}};
+
+// ═════════════════════════════════════════════════════════════════════════════
+// RENDER — OVERVIEW
+// ═════════════════════════════════════════════════════════════════════════════
+function renderOverview(){
+  $('overview').innerHTML = `
+    <div class="phead">
+      <div><h1>Crypto vs TradFi on Hyperliquid</h1>
+        <p>Where Hyperliquid’s perp volume and open interest are going, across native markets and every HIP-3 dex. Updates live.</p></div>
+      <div class="seg" role="group" aria-label="Timeframe" id="tf-seg"></div>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="grid g-hero">
+      <div class="panel" id="gauge"></div>
+      <div class="panel">
+        <div class="ph"><div><h2>Categories</h2><p id="lb-sub"></p></div><span class="label" style="padding-top:4px">Click a row to see its markets</span></div>
+        <div class="pb" style="padding:var(--s3) 0 var(--s2)"><div class="tbl-wrap"><table class="lb" id="lb"></table></div></div>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:var(--s3)">
+      <div class="ph"><div><h2>Volume mix vs open interest mix</h2><p>Share of each category. Volume for the selected timeframe, open interest live.</p></div><div class="legend" id="mix-legend"></div></div>
+      <div class="pb" id="mix"></div>
+    </div>
+    <div class="grid g-hist" style="margin-top:var(--s3)">
+      <div class="panel"><div class="ph"><div><h2>Daily volume share</h2><p>Category share of each completed UTC day</p></div><span class="label" id="hist-aside" style="padding-top:4px"></span></div><div class="pb"><div class="chart" id="hist-a"></div><div class="legend" style="margin-top:var(--s3)">${CATS.map(c=>`<span><i style="background:${c.color}"></i>${c.key}</span>`).join('')}</div></div></div>
+      <div class="panel"><div class="ph"><div><h2>TradFi share of volume</h2><p>Line: TradFi % of daily volume. Bars: total daily volume.</p></div></div><div class="pb"><div class="chart" id="hist-b"></div></div></div>
+    </div>
+    <div class="panel" style="margin-top:var(--s3)">
+      <div class="ph"><div><h2>Dexes</h2><p>Hyperliquid native perps plus every HIP-3 dex with live markets. Click a row to filter Markets.</p></div></div>
+      <div class="pb" style="padding:var(--s3) 0 0"><div class="tbl-wrap" id="dex-tbl"></div></div>
+    </div>`;
+  renderTfDependent();
+  renderDexTable();
+  renderHistory();
+}
+
+function renderTfDependent(){
+  if (!S.agg || !$('gauge')) return;
+  const V = tfVol();
+  const cV = grpSum(V.cat,'Crypto'), tV = grpSum(V.cat,'TradFi');
+  $('tf-seg').innerHTML = ['1D','7D','30D'].map(t=>`<button class="${S.tf===t?'active':''}" onclick="setTf('${t}')" aria-pressed="${S.tf===t}">${t}</button>`).join('');
+  renderGauge(V, cV, tV);
+  renderKpis(V, cV, tV);
+  renderLeaderboard(V);
+  renderMix(V);
+}
+
+function renderKpis(V, cV, tV){
+  const A = S.agg, H = S.hist && S.hist.length>1 ? S.hist : null;
+  const tfP = tV/(cV+tV||1)*100;
+  // compare current window vs previous window of same length (only for 7D/30D with enough history)
+  let volDelta='', shareDelta='';
+  if (H){
+    const n = S.tf==='30D'?30:S.tf==='7D'?7:1;
+    const cur = H.slice(-n), prev = H.slice(-2*n,-n);
+    if (prev.length===n){
+      const sv = a=>a.reduce((x,d)=>x+d.total,0), st = a=>a.reduce((x,d)=>x+grpSum(d.cat,'TradFi'),0)/sv(a)*100;
+      if (S.tf!=='1D') volDelta = deltaPill((sv(cur)/sv(prev)-1)*100);
+      shareDelta = deltaPill(st(cur)-st(prev),'pp');
+    }
+    if (S.tf==='1D'){ const last=H.at(-1); shareDelta = deltaPill(tfP - tfShare(last),'pp'); }
+  }
+  const sliceN = S.tf==='7D'?7:30;
+  const sparkVol = H ? sparkline(H.slice(-Math.max(sliceN,14)).map(d=>d.total),'#3ec1ad') : '';
+  const sparkTf  = H ? sparkline(H.slice(-Math.max(sliceN,14)).map(tfShare),'#f5a352') : '';
+  const cO=A.grp.Crypto.oi, tO=A.grp.TradFi.oi;
+  $('kpis').innerHTML = `
+    <div class="panel kpi"><span class="label">Volume · ${TF_LABEL[S.tf]}</span><span class="v">${$u(V.total)}</span>
+      <span class="sub">${volDelta?volDelta+' vs prior '+TF_LABEL[S.tf]:(V.live?'rolling 24h':'')}</span>${sparkVol}</div>
+    <div class="panel kpi"><span class="label">TradFi share · ${TF_LABEL[S.tf]}</span><span class="v" style="color:var(--tradfi)">${tfP.toFixed(1)}%</span>
+      <span class="sub">${shareDelta?shareDelta+(S.tf==='1D'?' vs yesterday':' vs prior '+TF_LABEL[S.tf]):'of total volume'}</span>${sparkTf}</div>
+    <div class="panel kpi"><span class="label">Open interest</span><span class="v">${$u(A.oi)}</span>
+      <span class="sub">TradFi ${pct(tO,A.oi)} · Crypto ${pct(cO,A.oi)}</span>
+      <div class="split" title="Crypto vs TradFi OI"><i style="width:${cO/A.oi*100}%;background:var(--crypto)"></i><i style="flex:1;background:var(--tradfi)"></i></div></div>
+    <div class="panel kpi"><span class="label">Live markets</span><span class="v">${A.n}</span>
+      <span class="sub">${A.grp.Crypto.n} crypto · ${A.grp.TradFi.n} TradFi · ${S.dexes.length} dexes</span>
+      <div class="split" title="Markets per group"><i style="width:${A.grp.Crypto.n/A.n*100}%;background:var(--crypto)"></i><i style="flex:1;background:var(--tradfi)"></i></div></div>`;
+}
+
+function renderGauge(V, cV, tV){
+  const tot = cV+tV || 1, cp = cV/tot*100, tp = tV/tot*100;
+  const vibe = cp>80?['Full degen','crypto owns the tape']:cp>65?['Degens in control','crypto leads volume']
+    :cp>52?['Leaning crypto','on-chain assets favoured']:cp>=48?['Balanced','neck and neck']
+    :cp>=35?['Leaning TradFi','traditional assets gaining ground']:['TradFi in charge','Wall Street has arrived'];
+  const cx=150, cy=150, r=112, w=18, rad=d=>d*Math.PI/180;
+  const pt = (deg,rr=r) => [cx + rr*Math.cos(rad(deg)), cy - rr*Math.sin(rad(deg))];
+  const gap = 1.2, split = 180 - tp/100*180;
+  const arc = (a0,a1)=>{const [x0,y0]=pt(a0),[x1,y1]=pt(a1);return `M${x0.toFixed(2)} ${y0.toFixed(2)} A${r} ${r} 0 0 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`};
+  const ticks = [0,25,50,75,100].map(p=>{const a=180-p*1.8,[x1,y1]=pt(a,r-w/2-6),[x2,y2]=pt(a,r-w/2-11);return`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#2a4645" stroke-width="1.5" stroke-linecap="round"/>`}).join('');
+  const [nx,ny] = pt(split, r-w/2-18);
+  const share = `Hyperliquid vibe check (${TF_LABEL[S.tf]}): ${cp.toFixed(1)}% crypto / ${tp.toFixed(1)}% TradFi of ${$u(V.total)} volume.`;
+  $('gauge').innerHTML = `
+    <div class="ph"><div><h2>The vibe</h2><p>Crypto vs TradFi share of ${TF_LABEL[S.tf]} volume</p></div></div>
+    <div class="gauge">
+      <div class="g-sides">
+        <div class="g-side"><div class="k"><i style="background:var(--tradfi)"></i>TradFi</div><div class="v">${tp.toFixed(1)}%</div><div class="a">${$u(tV)}</div></div>
+        <div class="g-side r"><div class="k">Crypto<i style="background:var(--crypto)"></i></div><div class="v">${cp.toFixed(1)}%</div><div class="a">${$u(cV)}</div></div>
+      </div>
+      <svg class="g-svg" viewBox="0 0 300 160" role="img" aria-label="${cp.toFixed(1)}% crypto versus ${tp.toFixed(1)}% TradFi">
+        <path d="${arc(180,0)}" fill="none" stroke="#132b2a" stroke-width="${w}" stroke-linecap="round"/>
+        ${tp>0.5?`<path d="${arc(180,Math.min(180,split+gap))}" fill="none" stroke="#f5a352" stroke-width="${w}" stroke-linecap="round"/>`:''}
+        ${cp>0.5?`<path d="${arc(Math.max(0,split-gap),0)}" fill="none" stroke="#3ec1ad" stroke-width="${w}" stroke-linecap="round"/>`:''}
+        ${ticks}
+        <line x1="${cx}" y1="${cy}" x2="${nx.toFixed(2)}" y2="${ny.toFixed(2)}" stroke="#e8f2f0" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="${cx}" cy="${cy}" r="6" fill="#e8f2f0"/><circle cx="${cx}" cy="${cy}" r="2.5" fill="#0a1c1c"/>
+      </svg>
+      <div class="verdict"><b>${vibe[0]}</b>${vibe[1]}</div>
+      <div class="g-foot">
+        <a class="btn secondary" target="_blank" rel="noopener" href="https://x.com/intent/tweet?text=${encodeURIComponent(share)}&url=${encodeURIComponent('https://hyperliquidvibecheck.xyz')}">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L2.333 2.25H8.98l4.013 5.297zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Share on X</a>
+        <button class="btn secondary" onclick="navigator.clipboard?.writeText(${esc(JSON.stringify(share))}).then(()=>toast('Copied'))">Copy</button>
+      </div>
+      <div class="fine">${V.live&&S.tf!=='1D'?'History still loading, so this shows the live 24h for now':V.live?'Rolling 24h notional volume across all live perps':`Sum of ${V.days} completed UTC days`}</div>
     </div>`;
 }
 
-// Local dev candle fetch (mirrors what the server does in production)
-async function _localFetchCandles(){
-  const API='https://api.hyperliquid.xyz/info';
-  const assets=Object.keys(AC);
-  const now=Date.now(), start=now-31*24*60*60*1000;
-  const BATCH=8, allCandles={};
-  for(let i=0;i<assets.length;i+=BATCH){
-    const batch=assets.slice(i,i+BATCH);
-    const rs=await Promise.allSettled(batch.map(async coin=>{
-      const ctrl=new AbortController();
-      const tid=setTimeout(()=>ctrl.abort(),8000); // 8s per-request timeout
-      try{
-        const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({type:'candleSnapshot',req:{coin,interval:'1d',startTime:start,endTime:now}}),
-          signal:ctrl.signal});
-        const d=await r.json();
-        clearTimeout(tid);
-        if(!Array.isArray(d))return{coin,candles:[]};
-        return{coin,candles:d.map(c=>({day:new Date(c.t).toLocaleDateString('en-US',{month:'short',day:'numeric'}),vol:parseFloat(c.v||0)*parseFloat(c.c||0)}))};
-      }catch(e){clearTimeout(tid);return{coin,candles:[]};}
-    }));
-    rs.forEach(r=>{if(r.status==='fulfilled'&&r.value)allCandles[r.value.coin]=r.value.candles;});
-    if(i+BATCH<assets.length)await new Promise(res=>setTimeout(res,150));
+function renderLeaderboard(V){
+  const A = S.agg;
+  $('lb-sub').textContent = `Share of ${TF_LABEL[S.tf]} volume and live open interest`;
+  const maxShare = Math.max(...CATS.map(c=>(V.cat[c.key]||0)/V.total));
+  let html = `<thead><tr><th>Category</th><th>Vol share</th><th class="hide-sm">Volume</th><th>OI share</th><th class="hide-sm">Top market</th></tr></thead><tbody>`;
+  Object.keys(GROUPS).forEach(g=>{
+    const gv = grpSum(V.cat,g);
+    html += `<tr class="grp"><td><span class="cname" style="font-size:12px;font-weight:600;color:var(--text-2)"><i style="background:${GROUPS[g].color};border-radius:50%;width:8px;height:8px"></i>${g}</span></td>
+      <td><span class="num">${pct(gv,V.total)}</span></td><td class="hide-sm"><span class="num">${$u(gv)}</span></td><td><span class="num">${pct(A.grp[g].oi,A.oi)}</span></td><td class="hide-sm">${A.grp[g].n} markets</td></tr>`;
+    CATS.filter(c=>c.group===g).forEach(c=>{
+      const a=A.cat[c.key], v=V.cat[c.key]||0, sh=v/V.total, top=a.top[0];
+      html += `<tr class="row" tabindex="0" onclick="openCat('${c.key}')" onkeydown="if(event.key==='Enter')openCat('${c.key}')">
+        <td><span class="cname"><i style="background:${c.color}"></i>${c.key}<small>${a.n}</small></span></td>
+        <td><div class="sharebar"><span class="track"><i style="width:${maxShare?sh/maxShare*100:0}%;background:${c.color}"></i></span><span class="p">${pct(v,V.total)}</span></div></td>
+        <td class="hide-sm">${$u(v)}</td>
+        <td>${pct(a.oi,A.oi)}</td>
+        <td class="hide-sm topm">${top?`${esc(top.sym)} <span class="${top.chg>=0?'up':'down'}" style="font-size:11px">${sgn(top.chg)}</span>`:'—'}</td></tr>`;
+    });
+  });
+  $('lb').innerHTML = html+'</tbody>';
+}
+
+function renderMix(V){
+  const A = S.agg;
+  const bar = (data,total) => `<div class="mixbar">${CATS.map(c=>{const v=data[c.key]||0;const w=v/total*100;return w>0.05?`<i style="width:${w}%;background:${c.color}" title="${c.key}: ${pct(v,total)} (${$u(v)})"></i>`:''}).join('')}</div>`;
+  const oiData = Object.fromEntries(CATS.map(c=>[c.key,A.cat[c.key].oi]));
+  const tvp = grpSum(V.cat,'TradFi')/V.total*100, top = A.grp.TradFi.oi/A.oi*100;
+  // biggest OI-vs-volume gap among categories
+  const gaps = CATS.map(c=>({c, d:(oiData[c.key]/A.oi - (V.cat[c.key]||0)/V.total)*100})).sort((a,b)=>b.d-a.d);
+  const g = gaps[0];
+  $('mix-legend').innerHTML = CATS.map(c=>`<span><i style="background:${c.color}"></i>${c.key}</span>`).join('');
+  $('mix').innerHTML = `
+    <div class="mix"><span class="k">Volume</span>${bar(V.cat,V.total)}<span class="t">${$u(V.total)}</span></div>
+    <div class="mix"><span class="k">Open interest</span>${bar(oiData,A.oi)}<span class="t">${$u(A.oi)}</span></div>
+    <div class="insight">TradFi is <b>${tvp.toFixed(1)}%</b> of volume but <b>${top.toFixed(1)}%</b> of open interest${top>tvp?', so TradFi positions are held longer and churn less':''}.
+      ${g&&g.d>1?`The biggest gap is <b>${g.c.key}</b>, with ${g.d.toFixed(1)}pp more share of OI than of volume.`:''}</div>`;
+}
+
+function renderDexTable(){
+  const A = S.agg;
+  const rows = S.dexes.map(d=>({d, a:A.dex[d.id]})).filter(x=>x.a).sort((x,y)=>y.a.vol-x.a.vol);
+  const maxV = Math.max(...rows.map(x=>x.a.vol),1);
+  $('dex-tbl').innerHTML = `<table class="t"><thead><tr><th class="l rank">#</th><th class="l">Dex</th><th>Markets</th><th>24h volume</th><th class="hide-sm">Vol share</th><th>Open interest</th><th>TradFi share</th><th class="l hide-sm">Top market</th></tr></thead><tbody>
+    ${rows.map(({d,a},i)=>{const tf=a.vol?a.tfVol/a.vol:0;return`<tr style="cursor:pointer" onclick="openDex('${esc(d.id)}')">
+      <td class="l rank">${i+1}</td>
+      <td class="l"><div class="mk"><b style="font-family:var(--sans)">${esc(d.name)}</b><span class="badge${d.id?' hip3':''}">${d.id?esc(d.id):'native'}</span></div></td>
+      <td>${a.n}</td>
+      <td><div class="vbar">${$u(a.vol)}<span class="track"><i style="width:${a.vol/maxV*100}%;background:var(--accent)"></i></span></div></td>
+      <td class="hide-sm">${pct(a.vol,A.vol)}</td>
+      <td>${$u(a.oi)}</td>
+      <td><div class="vbar">${pct(a.tfVol,a.vol)}<span class="track"><i style="width:${tf*100}%;background:var(--tradfi)"></i></span></div></td>
+      <td class="l hide-sm">${a.top?`${esc(a.top.sym)} <span class="muted">${$u(a.top.vol)}</span>`:'—'}</td></tr>`}).join('')}
+  </tbody></table>`;
+}
+
+function renderHistory(){
+  const a = $('hist-a'), b = $('hist-b'); if (!a) return;
+  const P = S.histProg;
+  const aside = $('hist-aside');
+  if (aside) aside.textContent = P.total ? (histRunning ? `Loading ${P.done}/${P.total}` : `${(P.coverage*100).toFixed(1)}% of vol covered`) : '';
+  if (!S.hist || S.hist.length<2){
+    ['ha','hb'].forEach(k=>{ if(S.charts[k]){S.charts[k].destroy();delete S.charts[k];} });
+    const msg = S.histErr ? `Couldn’t load history: ${esc(S.histErr)}` : 'Fetching daily candles…';
+    [a,b].forEach(el=>{ el.innerHTML = `<div class="empty">${S.histErr?'':'<div class="spin"></div>'}${msg}<div class="prog"><i style="width:${P.total?P.done/P.total*100:0}%"></i></div></div>`; });
+    return;
   }
-  const daySet=new Set();
-  Object.values(allCandles).forEach(cs=>cs.forEach(c=>daySet.add(c.day)));
-  const yr=new Date().getFullYear();
-  const days=Array.from(daySet).sort((a,b)=>new Date(`${a},${yr}`)-new Date(`${b},${yr}`)).slice(-30);
-  return days.map(day=>{
-    let totalVol=0;const catVol={};
-    Object.entries(allCandles).forEach(([coin,cs])=>{
-      const c=cs.find(x=>x.day===day);if(!c)return;
-      totalVol+=c.vol;
-      if(!AC[coin]){if(coin.includes(':')){const d=coin.split(':')[0];if(d!=='hyna'){catVol['TradFi']=(catVol['TradFi']||0)+c.vol;catVol['Stocks']=(catVol['Stocks']||0)+c.vol;}}return;}
-      ALL_CATS.forEach(dc=>{if(!grp(coin,dc.key))return;catVol[dc.key]=(catVol[dc.key]||0)+c.vol;});
-    });
-    return{day,totalVol,catVol};
-  });
+  const H = S.hist, labels = H.map(d=>fmtDay(d.day));
+  if (!a.querySelector('canvas')){ a.innerHTML='<canvas id="ha"></canvas>'; b.innerHTML='<canvas id="hb"></canvas>'; }
+  const ds = CATS.map(c=>({label:c.key,data:H.map(d=>d.total?+((d.cat[c.key]||0)/d.total*100).toFixed(2):0),backgroundColor:c.color,stack:'s',borderWidth:0,borderSkipped:false,barPercentage:.82,categoryPercentage:.9}));
+  if (S.charts.ha){ S.charts.ha.data.labels=labels; S.charts.ha.data.datasets.forEach((d,i)=>d.data=ds[i].data); S.charts.ha.update('none'); }
+  else S.charts.ha = new Chart($('ha'),{type:'bar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,animation:{duration:250},interaction:{mode:'index',intersect:false},
+    plugins:{legend:{display:false},tooltip:tip({label:c=>c.raw>=0.1?` ${c.dataset.label}  ${c.raw.toFixed(1)}%`:null})},
+    scales:{x:{stacked:true,grid:{display:false},border:{color:'#173030'},ticks:{...tick,maxRotation:0,autoSkipPadding:14}},
+      y:{stacked:true,min:0,max:100,grid:{color:'rgba(23,48,48,.7)'},border:{display:false},ticks:{...tick,stepSize:25,callback:v=>v+'%'}}}}});
+  const tf = H.map(d=>+tfShare(d).toFixed(2)), vol = H.map(d=>d.total);
+  if (S.charts.hb){ S.charts.hb.data.labels=labels; S.charts.hb.data.datasets[0].data=tf; S.charts.hb.data.datasets[1].data=vol; S.charts.hb.update('none'); }
+  else S.charts.hb = new Chart($('hb'),{data:{labels,datasets:[
+      {type:'line',label:'TradFi share',data:tf,borderColor:'#f5a352',backgroundColor:'rgba(245,163,82,.10)',fill:true,tension:.3,pointRadius:0,pointHoverRadius:4,pointBackgroundColor:'#f5a352',borderWidth:2,yAxisID:'y',order:0},
+      {type:'bar',label:'Total volume',data:vol,backgroundColor:'rgba(62,193,173,.16)',hoverBackgroundColor:'rgba(62,193,173,.3)',borderWidth:0,yAxisID:'y2',order:1,barPercentage:.8}]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:250},interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:tip({label:c=>c.dataset.yAxisID==='y'?` TradFi  ${c.raw.toFixed(1)}%`:` Volume  ${$u(c.raw)}`})},
+      scales:{x:{grid:{display:false},border:{color:'#173030'},ticks:{...tick,maxRotation:0,autoSkipPadding:14}},
+        y:{min:0,grid:{color:'rgba(23,48,48,.7)'},border:{display:false},ticks:{...tick,color:'#d99a5c',callback:v=>v+'%'}},
+        y2:{position:'right',grid:{display:false},border:{display:false},ticks:{...tick,callback:v=>$u(v)}}}}});
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VIBE GAUGE — half-circle speedometer
-// ─────────────────────────────────────────────────────────────────────────────
-function drawGauge(cryptoPct, tradfiPct, totalVol, catVol) {
-  // Text labels
-  document.getElementById('gauge-crypto-pct').textContent = cryptoPct.toFixed(1) + '%';
-  document.getElementById('gauge-tradfi-pct').textContent = tradfiPct.toFixed(1) + '%';
-  document.getElementById('gauge-crypto-abs').textContent = $u(catVol['Crypto'] || 0);
-  document.getElementById('gauge-tradfi-abs').textContent = $u(catVol['TradFi'] || 0);
-  const dominance = cryptoPct > 65 ? 'crypto dominant' : cryptoPct > 52 ? 'slightly crypto' :
-                    cryptoPct < 35 ? 'tradfi dominant' : cryptoPct < 48 ? 'slightly tradfi' : 'balanced';
-  const taglines = {'crypto dominant':'▲ Degens in control — crypto volume leading',
-    'slightly crypto':'↗ Leaning crypto — traders favour on-chain assets',
-    'balanced':'= Balanced market — crypto and tradfi neck and neck',
-    'slightly tradfi':'↘ Leaning TradFi — traditional assets gaining ground',
-    'tradfi dominant':'▼ TradFi in charge — institutional flavour today'};
-  document.getElementById('gauge-tagline').innerHTML = '<strong>' + taglines[dominance] + '</strong>';
-  document.getElementById('gauge-needle-val').textContent = cryptoPct.toFixed(1) + '% Crypto';
-  document.getElementById('gauge-needle-sub').textContent = $u(totalVol) + ' total vol';
-  document.getElementById('gauge-tf-note').textContent =
-    'Timeframe: ' + ({'1D':'24h','7D':'7 days','30D':'30 days'}[S.tf]||'24h') + ' · Data: Hyperliquid public API';
-
-  const canvas = document.getElementById('vibe-gauge');
-  if (!canvas) return;
-  canvas.setAttribute('role','img');
-  canvas.setAttribute('aria-label',
-    `Half-circle gauge: ${cryptoPct.toFixed(1)}% Crypto (${$u(catVol['Crypto']||0)}) vs ${tradfiPct.toFixed(1)}% TradFi (${$u(catVol['TradFi']||0)}) — total volume ${$u(totalVol)}`);
-
-  // Destroy previous chart instance
-  if (window._vibeChart) { window._vibeChart.destroy(); window._vibeChart = null; }
-
-  // Chart.js half-donut:
-  // rotation: -90deg (starts at 9 o'clock = left)
-  // circumference: 180deg (half circle only)
-  // Data: [TradFi, Crypto] — TradFi on left, Crypto on right
-  window._vibeChart = new Chart(canvas, {
-    type: 'doughnut',
-    data: {
-      labels: ['TradFi', 'Crypto'],
-      datasets: [{
-        data: [tradfiPct, cryptoPct],
-        backgroundColor: ['#e8833a', '#4fd2c2'],
-        borderColor: ['#0a1410', '#0a1410'],
-        borderWidth: 3,
-        hoverOffset: 0,
-      }]
-    },
-    options: {
-      rotation: -90,          // start at left (9 o'clock)
-      circumference: 180,     // only draw top half
-      cutout: '60%',          // donut hole size
-      responsive: true,
-      maintainAspectRatio: true,
-      aspectRatio: 2,         // width:height = 2:1 → perfect half-circle shape
-      animation: { duration: 600, easing: 'easeInOutQuart' },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#01241d',
-          borderColor: 'rgba(79,210,194,0.3)',
-          borderWidth: 1,
-          titleColor: '#4fd2c2',
-          bodyColor: '#f0faf8',
-          callbacks: {
-            label: ctx => ` ${ctx.label}: ${ctx.raw.toFixed(1)}%  (${$u(catVol[ctx.label]||0)})`
-          }
-        }
-      }
-    }
-  });
+function renderTape(){
+  const top = [...S.markets].sort((a,b)=>b.vol-a.vol).slice(0,28);
+  const item = m=>`<span class="tk" onclick="openSearch('${esc(m.sym)}')"><span class="s">${esc(m.sym)}</span><span class="d">${m.dex||''}</span><span class="${m.chg>=0?'up':'down'}">${sgn(m.chg)}</span></span>`;
+  const row = top.map(item).join('');
+  $('tape').innerHTML = `<div class="tape-track">${row}${row}</div>`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// PAGE SWITCHING
-// ─────────────────────────────────────────────────────────────────────────────
-function switchPage(page) {
-  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  document.querySelectorAll('.nav-tab').forEach(el => {
-    if (el.textContent.toLowerCase().includes(page === 'dashboard' ? 'dash' : 'asset')) {
-      el.classList.add('active');
-    }
-  });
-  if (page === 'docs') renderDocs();
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// DOCS PAGE — asset index grouped by category
-// ─────────────────────────────────────────────────────────────────────────────
-function renderDocs() {
-  const container = document.getElementById('docs-content');
-
-  // Build category → assets map from AC
-  const categories = {
-    BTC:         { label:'BTC',          color:'#4fd2c2', parent:'Crypto',  assets:[] },
-    Altcoins:    { label:'Altcoins',     color:'#f5a623', parent:'Crypto',  assets:[] },
-    Stocks:      { label:'Stocks',       color:'#e05c8a', parent:'TradFi',  assets:[] },
-    Indices:     { label:'Indices',      color:'#7b6cf6', parent:'TradFi',  assets:[] },
-    Commodities: { label:'Commodities',  color:'#4caf82', parent:'TradFi',  assets:[] },
-    FX:          { label:'FX',           color:'#e8833a', parent:'TradFi',  assets:[] },
-    'Pre-IPO':   { label:'Pre-IPO',      color:'#a78bfa', parent:'TradFi',  assets:[] },
-  };
-
-  Object.entries(AC).forEach(([name, cat]) => {
-    const key = cat.s;
-    if (categories[key]) categories[key].assets.push(name);
-  });
-
-  // Sort each category's assets: native first, then hip3 prefixed
-  Object.values(categories).forEach(cat => {
-    cat.assets.sort((a, b) => {
-      const aHip = a.includes(':');
-      const bHip = b.includes(':');
-      if (aHip !== bHip) return aHip ? 1 : -1;
-      return a.localeCompare(b);
-    });
-  });
-
-  const totalAssets = Object.values(AC).length;
-
-  container.innerHTML = `
-    <div class="docs-hero">
-      <h2>Asset Index</h2>
-      <p>
-        Complete list of all ${totalAssets} assets tracked by this dashboard, grouped by category.
-        Data is sourced directly from the Hyperliquid public API.
-        Native perp markets have no prefix (e.g. <code style="font-family:'Space Mono',monospace;font-size:10px;background:rgba(79,210,194,.08);padding:1px 5px;border-radius:3px;color:var(--teal)">BTC</code>).
-        HIP-3 builder-deployed markets include a dex prefix
-        (e.g. <code style="font-family:'Space Mono',monospace;font-size:10px;background:rgba(245,166,35,.08);padding:1px 5px;border-radius:3px;color:#f5a623">xyz:NVDA</code>).
-      </p>
-    </div>
-
-    <div class="docs-note" style="margin-bottom:20px">
-      <strong>Two categories per asset:</strong>
-      Every asset is tagged with a primary category (Crypto / TradFi) and a
-      subcategory (BTC / Altcoins / Stocks / Indices / Commodities / FX).
-      The dashboard sums volume and OI across all dexes for the same subcategory —
-      so <code style="font-family:'Space Mono',monospace;font-size:10px;background:rgba(79,210,194,.06);padding:1px 5px;border-radius:3px;color:var(--teal)">xyz:GOLD</code> +
-      <code style="font-family:'Space Mono',monospace;font-size:10px;background:rgba(79,210,194,.06);padding:1px 5px;border-radius:3px;color:var(--teal)">flx:GOLD</code> +
-      <code style="font-family:'Space Mono',monospace;font-size:10px;background:rgba(79,210,194,.06);padding:1px 5px;border-radius:3px;color:var(--teal)">hyna:GOLD</code>
-      all count toward Commodities.
-    </div>
-
-    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:16px;flex-wrap:wrap">
-      ${['Crypto','TradFi'].map(p=>`
-        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted)">
-          <span style="color:var(--teal);font-weight:700">${p}</span> —
-          ${Object.values(categories).filter(c=>c.parent===p).reduce((a,c)=>a+c.assets.length,0)} assets
+// ═════════════════════════════════════════════════════════════════════════════
+// RENDER — MARKETS
+// ═════════════════════════════════════════════════════════════════════════════
+function renderMarketsShell(){
+  $('markets').innerHTML = `
+    <div class="phead"><div><h1>Markets</h1><p>Every live perp on Hyperliquid, native and HIP-3, with its category.</p></div></div>
+    <div class="panel">
+      <div class="filters">
+        <div class="frow">
+          <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="mk-q" type="search" placeholder="Search ticker or dex — NVDA, GOLD, kPEPE, xyz…" autocomplete="off" aria-label="Search markets"/></label>
+          <select class="select" id="mk-dex" aria-label="Filter by dex"></select>
         </div>
-      `).join('')}
-      <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted)">
-        <span style="color:var(--teal);font-weight:700">Total</span> — ${totalAssets} assets across 7 dexes
+        <div class="chips" id="mk-cats"></div>
       </div>
-    </div>
-
-    <div class="docs-grid">
-      ${Object.entries(categories).map(([key, cat]) => `
-        <div class="docs-cat-card">
-          <div class="docs-cat-header">
-            <div class="docs-cat-dot" style="background:${cat.color}"></div>
-            <div>
-              <div class="docs-cat-name">${cat.label}</div>
-              <div class="docs-cat-parent">${cat.parent}</div>
-            </div>
-            <div class="docs-cat-count">${cat.assets.length} assets</div>
-          </div>
-          <div class="docs-asset-list">
-            ${cat.assets.map(name => {
-              const isHip3 = name.includes(':');
-              const display = isHip3 ? name : name;
-              return `<span class="docs-asset-chip${isHip3?' hip3':''}" title="${isHip3?'HIP-3 market: '+name.split(':')[0]+' dex':'Native perp'}">${display}</span>`;
-            }).join('')}
-          </div>
-        </div>
-      `).join('')}
-    </div>
-
-    <div class="docs-note">
-      <strong>HIP-3 Dexes:</strong>
-      <code style="font-family:'Space Mono',monospace;font-size:10px;background:rgba(79,210,194,.06);padding:1px 5px;border-radius:3px;color:var(--teal)">xyz:</code> XYZ Exchange (primary TradFi dex) ·
-      <code style="font-family:'Space Mono',monospace;font-size:10px;background:rgba(79,210,194,.06);padding:1px 5px;border-radius:3px;color:var(--teal)">flx:</code> Felix Exchange ·
-      <code style="font-family:'Space Mono',monospace;font-size:10px;background:rgba(79,210,194,.06);padding:1px 5px;border-radius:3px;color:var(--teal)">vntl:</code> Ventual (sector baskets + Pre-IPO: SpaceX, OpenAI, Anthropic) ·
-      <code style="font-family:'Space Mono',monospace;font-size:10px;background:rgba(79,210,194,.06);padding:1px 5px;border-radius:3px;color:var(--teal)">hyna:</code> Hyena Exchange ·
-      <code style="font-family:'Space Mono',monospace;font-size:10px;background:rgba(79,210,194,.06);padding:1px 5px;border-radius:3px;color:var(--teal)">km:</code> KM Exchange ·
-      <code style="font-family:'Space Mono',monospace;font-size:10px;background:rgba(79,210,194,.06);padding:1px 5px;border-radius:3px;color:var(--teal)">cash:</code> Cash Exchange ·
-      <code style="font-family:'Space Mono',monospace;font-size:10px;background:rgba(79,210,194,.06);padding:1px 5px;border-radius:3px;color:var(--teal)">para:</code> Paragon (crypto-index products: BTCD, TOTAL2, OTHERS + AVGO, H100)<br/>
-      <strong>Note:</strong> This dashboard focuses on volume and open interest data from Hyperliquid's public API.
-      Asset categorisation is maintained manually — new listings may appear as "Other" until the config is updated.
-    </div>
-  `;
+      <div class="tbl-wrap" id="mk-tbl" style="max-height:70vh"></div>
+      <div class="tfoot"><span id="mk-sum"></span><span id="mk-more"></span></div>
+    </div>`;
+  $('mk-q').addEventListener('input',e=>{S.mk.q=e.target.value.trim().toLowerCase();S.mk.limit=60;renderMarkets();});
+  $('mk-dex').addEventListener('change',e=>{S.mk.dex=e.target.value;S.mk.limit=60;renderMarkets();});
 }
 
-// Redraw gauge on resize
-// SVG gauge auto-scales via viewBox — no resize handler needed
+function renderMarkets(){
+  if (!$('mk-tbl')) renderMarketsShell();
+  const M = S.mk, A = S.agg;
+  if ($('mk-q').value.toLowerCase() !== M.q) $('mk-q').value = M.q;
+  $('mk-dex').innerHTML = `<option value="All">All dexes</option>`+S.dexes.map(d=>`<option value="${esc(d.id||'native')}"${M.dex===(d.id||'native')?' selected':''}>${esc(d.name)}${d.id?' ('+esc(d.id)+')':''}</option>`).join('');
+  const count = k => k==='All'?S.markets.length:S.markets.filter(m=>m.cat===k||m.group===k).length;
+  const pills = [{key:'All',color:'#3ec1ad'},{key:'Crypto',color:GROUPS.Crypto.color},{key:'TradFi',color:GROUPS.TradFi.color},...CATS];
+  $('mk-cats').innerHTML = pills.map((p,i)=>`${i===3?'<span style="width:1px;background:var(--border);margin:4px 2px"></span>':''}<button class="chip${M.cat===p.key?' active':''}" style="--c:${p.color}" onclick="S.mk.cat='${p.key}';S.mk.limit=60;renderMarkets()"><i style="background:${p.color}"></i>${p.key}<span class="n">${count(p.key)}</span></button>`).join('');
+  let rows = S.markets.filter(m=>
+    (M.cat==='All' || m.cat===M.cat || m.group===M.cat) &&
+    (M.dex==='All' || (m.dex||'native')===M.dex) &&
+    (!M.q || m.name.toLowerCase().includes(M.q) || dexLabel(m.dex).toLowerCase().includes(M.q)));
+  const key = M.sort;
+  rows.sort((a,b)=>{const x=a[key],y=b[key];return (typeof x==='string'?x.localeCompare(y):x-y)*M.dir;});
+  const vSum = rows.reduce((a,m)=>a+m.vol,0), oSum = rows.reduce((a,m)=>a+m.oi,0);
+  const cols = [['name','Market','l'],['cat','Category','l hide-sm'],['px','Price'],['chg','24h'],['vol','24h volume'],['oi','Open interest'],['fund','Funding APR','hide-sm'],['lev','Max lev','hide-sm']];
+  const shown = rows.slice(0,M.limit), maxV = Math.max(...rows.map(m=>m.vol),1);
+  $('mk-tbl').innerHTML = `<table class="t"><thead><tr><th class="l rank">#</th>${cols.map(([k,l,c])=>`<th class="sort${c?' '+c:''}${M.sort===k?' sorted':''}" onclick="sortMk('${k}')" aria-sort="${M.sort===k?(M.dir<0?'descending':'ascending'):'none'}">${l}${M.sort===k?`<span class="arr">${M.dir<0?'↓':'↑'}</span>`:''}</th>`).join('')}</tr></thead><tbody>
+    ${shown.length?shown.map((m,i)=>`<tr>
+      <td class="l rank">${i+1}</td>
+      <td class="l"><div class="mk"><b>${esc(m.sym)}</b>${badge(m)}</div></td>
+      <td class="l hide-sm"><span class="ctag"><i style="background:${CAT[m.cat].color}"></i>${m.cat}</span></td>
+      <td>${$px(m.px)}</td>
+      <td class="${m.chg>=0?'up':'down'}">${sgn(m.chg)}</td>
+      <td><div class="vbar">${$u(m.vol)}<span class="track"><i style="width:${Math.sqrt(m.vol/maxV)*100}%;background:${CAT[m.cat].color}"></i></span></div></td>
+      <td>${$u(m.oi)}</td>
+      <td class="hide-sm ${m.fund<0?'down':''}">${m.fund.toFixed(1)}%</td>
+      <td class="hide-sm muted">${m.lev}×</td></tr>`).join(''):`<tr><td colspan="9" style="text-align:center;color:var(--text-3);padding:40px">No markets match these filters.</td></tr>`}
+  </tbody></table>`;
+  $('mk-sum').textContent = `${rows.length} markets · ${$u(vSum)} volume (${pct(vSum,A.vol)}) · ${$u(oSum)} OI (${pct(oSum,A.oi)})`;
+  $('mk-more').innerHTML = rows.length>M.limit ? `<button class="btn secondary" onclick="S.mk.limit+=120;renderMarkets()">Show ${Math.min(120,rows.length-M.limit)} more</button>` : '';
+}
+function sortMk(k){ if(S.mk.sort===k) S.mk.dir*=-1; else {S.mk.sort=k; S.mk.dir=(k==='name'||k==='cat')?1:-1;} renderMarkets(); }
+function openCat(k){ S.mk.cat=k; S.mk.dex='All'; S.mk.q=''; S.mk.limit=60; switchPage('markets'); }
+function openDex(id){ S.mk.dex=id||'native'; S.mk.cat='All'; S.mk.q=''; S.mk.limit=60; switchPage('markets'); }
+function openSearch(q){ S.mk.q=q.toLowerCase(); S.mk.cat='All'; S.mk.dex='All'; S.mk.limit=60; switchPage('markets'); }
 
-// ESC key closes modal
-document.addEventListener('keydown',e=>{if(e.key==='Escape') closeModal({type:'click',target:document.getElementById('modal')});});
+// ═════════════════════════════════════════════════════════════════════════════
+// RENDER — ASSET INDEX
+// ═════════════════════════════════════════════════════════════════════════════
+function renderMethod(){
+  const A = S.agg;
+  const byCat = Object.fromEntries(CATS.map(c=>[c.key,S.markets.filter(m=>m.cat===c.key).sort((a,b)=>(a.dex?1:0)-(b.dex?1:0)||a.name.localeCompare(b.name))]));
+  $('method').innerHTML = `
+    <div class="phead"><div><h1>Asset index</h1><p>How every market is categorised and how the numbers are calculated.</p></div></div>
+    <div class="grid g2">
+      <div class="panel"><div class="ph"><h2>Methodology</h2></div><div class="pb prose">
+        <p><b>${A.n} live markets</b> on <b>${S.dexes.length} dexes</b>, pulled from the Hyperliquid API (<code>perpDexs</code> + <code>metaAndAssetCtxs</code>). Delisted markets are skipped. New listings appear without any code change.</p>
+        <ul>
+          <li><b>24h volume</b> is Hyperliquid’s rolling <code>dayNtlVlm</code>. <b>7D / 30D</b> add up completed UTC daily candles (volume × close) for the markets that make up at least 99.7% of 24h volume.</li>
+          <li><b>Open interest</b> is a live snapshot: contracts × mark price.</li>
+          <li><b>Funding APR</b> is the current hourly rate × 8,760.</li>
+        </ul></div></div>
+      <div class="panel"><div class="ph"><h2>Categorisation</h2></div><div class="pb prose">
+        <p>Every market gets one of <b>${CATS.length} categories</b>, and each category rolls up to <b style="color:var(--crypto)">Crypto</b> or <b style="color:var(--tradfi)">TradFi</b>. The same asset on different dexes lands in the same category. Native perps are always crypto. A HIP-3 listing the rules don’t recognise defaults to <b>Stocks</b>.</p>
+        <div class="dexrow">${S.dexes.map(d=>`<span><b>${d.id?esc(d.id):'native'}</b>${esc(d.full)} · ${A.dex[d.id].n}</span>`).join('')}</div></div></div>
+    </div>
+    ${Object.keys(GROUPS).map(g=>`
+      <div class="phead" style="margin:var(--s6) 0 var(--s3)"><div><h1 style="font-size:18px;display:flex;align-items:center;gap:8px"><i style="width:10px;height:10px;border-radius:50%;background:${GROUPS[g].color}"></i>${g}</h1></div><span class="label">${A.grp[g].n} markets</span></div>
+      <div class="idx">${CATS.filter(c=>c.group===g).map(c=>`
+        <div class="panel"><div class="ph"><div><h2 style="display:flex;align-items:center;gap:8px"><i style="width:10px;height:10px;border-radius:3px;background:${c.color}"></i>${c.key}</h2><p>${c.desc}</p></div><span class="label" style="padding-top:3px">${byCat[c.key].length}</span></div>
+          <div class="tags" style="padding-top:var(--s3)">${byCat[c.key].map(m=>`<span class="tag${m.dex?' hip3':''}" title="${m.dex?esc(dexLabel(m.dex)):'Native perp'} · ${$u(m.vol)} 24h">${esc(m.name)}</span>`).join('')||'<span class="tag">none live</span>'}</div>
+        </div>`).join('')}</div>`).join('')}`;
+}
 
-fetchData();
+// ═════════════════════════════════════════════════════════════════════════════
+// SHELL
+// ═════════════════════════════════════════════════════════════════════════════
+function switchPage(p){
+  document.querySelectorAll('.nav button').forEach(t=>{const on=t.dataset.page===p;t.classList.toggle('active',on);t.setAttribute('aria-selected',on)});
+  document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id==='page-'+p));
+  try{ history.replaceState(null,'','#'+p) }catch{}
+  window.scrollTo({top:0});
+  if (!S.agg) return;
+  if (p==='markets') renderMarkets();
+  if (p==='method') renderMethod();
+}
+document.querySelectorAll('.nav button').forEach(t=>t.addEventListener('click',()=>switchPage(t.dataset.page)));
+function setTf(tf){ S.tf=tf; renderTfDependent(); }
+
+function renderStatus(){
+  const el = $('status'); if (!el) return;
+  if (S.error && !S.agg){ el.innerHTML = `<span class="dot err"></span>Offline · retrying`; return; }
+  const m = Math.floor(S.countdown/60), s = String(S.countdown%60).padStart(2,'0');
+  el.innerHTML = `<span class="dot${S.error?' err':''}"></span>Live · ${m}:${s}`;
+  el.title = 'Next refresh in '+m+':'+s;
+  const ago = S.updatedAt ? Math.max(0,Math.round((Date.now()-S.updatedAt)/60000)) : 0;
+  const f = $('foot-stat');
+  if (f && S.agg) f.innerHTML = `<span><i></i>Hyperliquid API</span><span>${S.agg.n} markets · ${S.dexes.length} dexes</span><span>Updated ${ago<1?'just now':ago+'m ago'}</span>`;
+}
+
+function showSkeleton(){
+  $('overview').innerHTML = `<div class="sk" style="height:56px;width:min(520px,100%);margin-bottom:var(--s5)"></div>
+    <div class="kpis">${'<div class="sk" style="height:128px"></div>'.repeat(4)}</div>
+    <div class="grid g-hero"><div class="sk" style="height:420px"></div><div class="sk" style="height:420px"></div></div>`;
+}
+
+async function refresh(){
+  if (!S.agg) showSkeleton();
+  try{
+    const {markets,dexes} = await fetchLive();
+    S.markets = markets; S.dexes = dexes; S.agg = aggregate(markets);
+    S.updatedAt = Date.now(); S.error = null; S.countdown = REFRESH_SEC;
+    $('mk-cnt').textContent = markets.length;
+    renderTape();
+    if (!$('gauge')) renderOverview(); else { renderTfDependent(); renderDexTable(); }
+    const active = document.querySelector('.nav button.active')?.dataset.page;
+    if (active==='markets') renderMarkets();
+    if (active==='method') renderMethod();
+    fetchHistory();
+  }catch(e){
+    console.error(e); S.error = e.message; S.countdown = 60;
+    if (!S.agg) $('overview').innerHTML = `<div class="err">Couldn’t reach the Hyperliquid API: ${esc(e.message)}<br/>Retrying in 60s.${location.protocol==='file:'?'<br/>Tip: serve this folder with <code>python3 -m http.server 8080</code> and open http://localhost:8080':''}</div>`;
+  }
+  renderStatus();
+}
+
+setInterval(()=>{ S.countdown=Math.max(0,S.countdown-1); renderStatus(); if(S.countdown===0) refresh(); },1000);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden && S.updatedAt && Date.now()-S.updatedAt>REFRESH_SEC*1000) refresh(); });
+
+const initial = (location.hash||'').slice(1);
+if (['markets','method'].includes(initial)) switchPage(initial);
+refresh();
 </script>
 </body>
 </html>
